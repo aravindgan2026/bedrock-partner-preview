@@ -7,7 +7,7 @@ const msg=document.getElementById('m');
 function nf(t){msg.textContent=t||'We could not find that page. Check the link and try again.'}
 const path=location.pathname;if(path.indexOf(ROOT)!==0&&path+'/'!==ROOT){nf();return}
 let slug='';try{slug=decodeURIComponent(path.slice(ROOT.length)).replace(/\/+$/,'').toLowerCase()}catch(e){}
-if(PREVIEW&&(!slug||slug==='index.html'))slug='join-'+CFG.DEAL;
+if((PREVIEW&&(!slug||slug==='index.html'))||slug==='partners'){location.replace(ROOT+'p/signup.html'+location.search);return}
 if(!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)||slug.length>40){nf();return}
 const h=/(?:^#|&)t=([0-9a-f]{64})(?:&|$)/.exec(location.hash);
 if(h){try{localStorage.setItem('bp_key_'+slug,JSON.stringify(h[1]));localStorage.setItem('bp_me',JSON.stringify(slug))}catch(e){}try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}

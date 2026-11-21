@@ -239,9 +239,9 @@ function partnerCta(){drop('.cv-cta,.cv-chip');
  c.querySelector('#cta_join').onclick=openJoin;ch.onclick=openJoin}
 function openJoin(){var m=modal('',{label:'Partner sign up'});step1(m)}
 /* first screen: what this is (video + 3 lines), then one question. Operator 11-20: "wheres the video ... the workflow is confusing" */
-function step1(m){m.set('<h3>Become a Bedrock partner</h3><p class="cv-sub">For real estate and finance pros. Free.</p>'+
+function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, partner &#128075;</h3>':'<h3>Become a Bedrock partner</h3><p class="cv-sub">For real estate and finance pros. Free.</p>'+
  '<div class="cv-vid"><video src="'+ROOT+'p/partner-intro-v7.mp4" poster="'+ROOT+'p/partner-poster-v7.jpg" controls playsinline preload="none"></video></div>'+
- '<ol class="cv-how"><li><b>Get your own page</b> for this deal, with your name and logo.</li><li><b>Send it</b> to people you know.</li><li><b>Get paid</b> when they invest. Your Tracker shows how it is going.</li></ol>'+
+ '<ol class="cv-how"><li><b>Get your own page</b> for this deal, with your name and logo.</li><li><b>Send it</b> to people you know.</li><li><b>Get paid</b> when they invest. Your Tracker shows how it is going.</li></ol>')+
  '<p class="cv-q">To start, what do you do?</p>'+
  '<button type="button" class="cv-btn" data-r="re">I\'m in real estate</button><button type="button" class="cv-btn" data-r="fin">I\'m in finance &amp; investments</button>'+
  '<button type="button" class="cv-btn cv-link" id="inv">I just want to see the deal</button>');var pop=m.pop;

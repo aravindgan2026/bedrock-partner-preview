@@ -151,7 +151,7 @@ function teamShow(){var base=S.base,top=S.top,tr=$('tm_r'),u='';
  tr.max=base;tr.value=me.cut;
  function show(){var cut=P.cutOf(tr.value,base);$('tm_cut').textContent=cut+'% of '+base+'%';$('tm_me').textContent=cut+'%';$('tm_them').textContent=pts(base-cut);
   $('tm_ex').textContent='If their client puts in $'+P.EX_IN.toLocaleString('en-US')+': you get '+usd(P.EX_IN*cut/100)+', they get '+usd(P.EX_IN*(base-cut)/100)+'. A new cut counts only for pros who join after you change it.';
-  u=location.origin+C.ROOT+'p/signup.html?ref='+encodeURIComponent(me.slug);$('tm_link').textContent=u;return cut}
+  u=location.origin+C.ROOT+'partners?ref='+encodeURIComponent(me.slug);$('tm_link').textContent=u;return cut}
  tr.oninput=function(){var cut=show();$('tm_ok').hidden=true;clearTimeout(cutTimer);cutTimer=setTimeout(function(){C.me('cut_set',slug,{pct:cut}).then(function(r){if(r.ok){me.cut=r.cut;$('tm_ok').hidden=false}})},600)};show();
  $('tm_copy').onclick=function(){P.copyText(u,this)};
  var T=S.team||[];$('tm_list').innerHTML='<h3 class="d-h3">Your team ('+T.length+')</h3>'+(T.length?T.map(function(t){return '<div class="d-sprow"><span>'+esc(t.name)+'<small>'+esc(t.company||'')+' &middot; your cut '+t.cut+'%</small></span></div>'}).join(''):'<p class="d-note">Nobody yet. Pros you bring on show up here.</p>')}
