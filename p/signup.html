@@ -41,9 +41,9 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--o),var(--o2));-we
 .qa{background:#fff;border:1px solid var(--line);border-radius:16px;margin:0 0 10px;box-shadow:0 1px 2px rgba(60,30,10,.04);overflow:hidden}
 .qa summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;font-weight:700;font-size:15.5px;letter-spacing:-.01em}
 .qa summary::-webkit-details-marker{display:none}
-.qa summary i{flex:none;width:26px;height:26px;border-radius:50%;background:#FFF0E6;position:relative;transition:transform .2s}
+.qa summary i{flex:none;width:26px;height:26px;border-radius:50%;background:#FFF0E6;position:relative}
 .qa summary i:after{content:"";position:absolute;left:9px;top:7px;width:6px;height:6px;border-right:2px solid var(--o);border-bottom:2px solid var(--o);transform:rotate(45deg)}
-.qa[open] summary i{transform:rotate(180deg)}
+.qa summary i:after{transition:transform .2s,top .2s}.qa[open] summary i:after{transform:rotate(225deg);top:10px}
 .qa>div{padding:0 16px 16px;color:var(--soft);font-size:14.5px;line-height:1.5}
 .qa ol{margin:0;padding-left:20px}.qa li{margin:0 0 6px}.qa b{color:var(--ink)}
 #lf input{display:block;width:100%;font:inherit;font-size:16px;padding:12px 14px;margin:0 0 8px;border:1px solid #E6DACE;border-radius:12px;background:#FBF6F0;color:var(--ink)}
