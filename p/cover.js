@@ -195,7 +195,7 @@ window.BPC={esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,modal:
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=60820760';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
@@ -231,12 +231,11 @@ doc.addEventListener('click',function(ev){if(PASS)return;var t=ev.target;if(!t||
   return F.apply(window,arguments)};W.__bp=1;window.fetch=W})();
 /* ---------- decide which mode this page is in ---------- */
 function afterSave(p){drop('.cv-cta,.cv-chip');try{history.replaceState(null,'',ROOT+p.slug)}catch(e){}render(p);stampMail()}
-function partnerCta(){drop('.cv-cta,.cv-chip');
- var c=doc.createElement('div');c.className='cv-cta';c.setAttribute('data-cv','1');
- c.innerHTML='<b>Are you a real estate or finance pro?</b><span>Make your own page for this deal and share it.</span><button type="button" class="cv-btn" id="cta_join">Become a partner</button>';
- var f=doc.querySelector('footer');if(f&&f.parentNode)f.parentNode.insertBefore(c,f);else doc.body.appendChild(c);
- var ch=doc.createElement('button');ch.type='button';ch.className='cv-chip';ch.setAttribute('data-cv','1');ch.id='chip_join';ch.textContent='Partner sign up';doc.body.appendChild(ch);
- c.querySelector('#cta_join').onclick=openJoin;ch.onclick=openJoin}
+/* operator 11-20: partner sign-up stays low-key: no top chip, no big card; one small plain link above the footer to the invite page */
+function partnerCta(){drop('.cv-cta,.cv-chip,.cv-plink');
+ var c=doc.createElement('p');c.className='cv-plink';c.setAttribute('data-cv','1');
+ c.innerHTML='Real estate or finance pro? <a href="'+ROOT+'p/signup.html">Join our partner network</a>';
+ var f=doc.querySelector('footer');if(f&&f.parentNode)f.parentNode.insertBefore(c,f);else doc.body.appendChild(c)}
 function openJoin(){var m=modal('',{label:'Partner sign up'});step1(m)}
 /* first screen: what this is (video + 3 lines), then one question. Operator 11-20: "wheres the video ... the workflow is confusing" */
 function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, partner &#128075;</h3>':'<h3>Become a Bedrock partner</h3><p class="cv-sub">For real estate and finance pros. Free.</p>'+
