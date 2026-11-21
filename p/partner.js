@@ -11,7 +11,7 @@ function shareText(p,url){return (p&&p.company?p.company:'Bedrock')+' has a new 
 function copyText(u,btn){var done=function(){var o=btn.querySelector('.lbl')||btn;var t=o.textContent;o.textContent='Copied';setTimeout(function(){o.textContent=t},1400)};
  function fb(){var t=doc.createElement('textarea');t.value=u;t.style.position='fixed';t.style.opacity='0';doc.body.appendChild(t);t.select();try{doc.execCommand('copy')}catch(e){}doc.body.removeChild(t);done()}
  try{navigator.clipboard.writeText(u).then(done,fb)}catch(e){fb()}}
-function openSheet(p,url){var e=encodeURIComponent,msg=shareText(p,url);C.track('share_tap',p.slug);
+function openSheet(p,url){var e=encodeURIComponent,msg=shareText(p,url);C.track('share_tap',p.slug);C.ph&&C.ph('partner_share_open',{slug:p.slug});
  var h='<h3>Share my page</h3>'+
   '<label class="cv-l2" for="shmsg">Your message (you can change it)</label><textarea class="cv-msg" id="shmsg" rows="5"></textarea>'+
   '<a class="cv-opt" id="shwa" href="#" target="_blank" rel="noopener"><span class="cv-oi">'+ic('chat')+'</span>WhatsApp</a>'+

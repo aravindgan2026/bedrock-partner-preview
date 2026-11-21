@@ -45,6 +45,7 @@ function api(fn,body){return new Promise(function(res){var done=false,tm=setTime
  catch(e){done=true;clearTimeout(tm);res({ok:false,why:'net'})}})}
 function me(op,slug,extra){var b={op:op,slug:slug,key:keyFor(slug)};for(var k in extra)b[k]=extra[k];return api('partner-me',b)}
 var VIS=(function(){var v=lsGet('bpv','');if(!/^[a-z0-9]{10}$/.test(v)){v='';for(var i=0;i<10;i++)v+='abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random()*36)];lsSet('bpv',v)}return v})();
+function ph(e,p){try{if(window.posthog&&window.posthog.capture){var o={flow:'partner'};for(var k in p)o[k]=p[k];window.posthog.capture(e,o)}}catch(x){}}
 function track(kind,slug,extra){slug=slug||(CUR&&CUR.slug);if(!slug)return;var b={op:'event',slug:slug,kind:kind,visitor:VIS,own:kind!=='share_tap'&&!!keyFor(slug)};for(var k in extra)b[k]=extra[k];api('partner-public',b)}
 /* ---------- popups ---------- */
 var MODALS=[];
@@ -182,20 +183,21 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
  function saveNew(){var ct=q('#f_ct').value.trim(),hp=q('#f_hp').value;
   setBusy(true,'Making your page…');
   api('partner-signup',{op:'signup',deal:DEAL_TAG,role:o.role,name:q('#f_name').value.trim(),company:q('#f_co').value.trim(),contact:ct,terms:true,tv:TERMS_VERSION,ref:qs('ref').toLowerCase(),hp:hp}).then(function(r){
-   if(!r.ok||!r.slug){setBusy(false);err(whyText(r));return}
+   if(!r.ok||!r.slug){setBusy(false);err(whyText(r));ph('partner_signup_failed',{why:r&&r.why||'none'});return}
+   ph('partner_signed_up',{role:o.role,invited:!!qs('ref'),slug:r.slug});
    lsSet('bp_key_'+r.slug,r.key);lsSet('bp_me',r.slug);
    me('me',r.slug,{}).then(function(x){setBusy(false);var p=x.ok?x.p:{slug:r.slug,name:q('#f_name').value.trim(),company:q('#f_co').value.trim(),role:o.role};p.team=r.team;o.onSave(p,m)})})}
  q('#make').onclick=function(){if(busy)return;var name=q('#f_name').value.trim(),co=q('#f_co').value.trim();if(!name||!co)return;if(!edit&&!q('#accept').checked)return;err('');
-  if(edit)saveEdit();else saveNew()};
- if(cust)q('#skip').onclick=function(){o.onSkip(m)};
+  if(edit)saveEdit();else{ph('partner_signup_submit',{role:o.role});saveNew()}};
+ if(cust)q('#skip').onclick=function(){ph('partner_customize_skip',{});o.onSkip(m)};
  ok();link();paint()}
 /* ---------- shared handle for partner.js and tracker.html ---------- */
-window.BPC={esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,modal:modal,fitImage:fitImage,openProfile:openProfile,savedScreen:savedScreen,render:render,applySkin:applySkin,
+window.BPC={ph:ph,esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,modal:modal,fitImage:fitImage,openProfile:openProfile,savedScreen:savedScreen,render:render,applySkin:applySkin,
  textOn:textOn,prettyUrl:prettyUrl,privateUrl:privateUrl,trackerUrl:trackerUrl,roleBadge:roleBadge,roleKey:roleKey,animalByName:animalByName,animalAvatar:animalAvatar,
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=26427084';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=8790e503';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
@@ -234,7 +236,7 @@ function afterSave(p){drop('.cv-cta,.cv-chip');try{history.replaceState(null,'',
 /* operator 11-20: partner sign-up stays low-key: no top chip, no big card; one small plain link above the footer to the invite page */
 function partnerCta(){drop('.cv-cta,.cv-chip,.cv-plink');
  var c=doc.createElement('p');c.className='cv-plink';c.setAttribute('data-cv','1');
- c.innerHTML='Real estate or finance pro? <a href="'+ROOT+'p/signup.html">Join our partner network</a>';
+ c.innerHTML='Real estate or finance pro? <a href="'+ROOT+'p/signup.html">Join our partner network</a>';c.querySelector('a').onclick=function(){ph('partner_footer_link',{})};
  var f=doc.querySelector('footer');if(f&&f.parentNode)f.parentNode.insertBefore(c,f);else doc.body.appendChild(c)}
 function openJoin(){var m=modal('',{label:'Partner sign up'});step1(m)}
 /* first screen: what this is (video + 3 lines), then one question. Operator 11-20: "wheres the video ... the workflow is confusing" */
@@ -244,15 +246,15 @@ function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, 
  '<p class="cv-ask">What do you do?</p>'+
  '<button type="button" class="cv-btn" data-r="re">I\'m in real estate</button><button type="button" class="cv-btn" data-r="fin">I\'m in finance &amp; investments</button>'+
  '<button type="button" class="cv-btn cv-link" id="inv">I just want to see the deal</button>');var pop=m.pop;
- pop.querySelectorAll('button[data-r]').forEach(function(b){b.onclick=function(){step2(m,b.getAttribute('data-r'))}});
- pop.querySelector('#inv').onclick=m.close}
-function ready(p,m){loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
+ pop.querySelectorAll('button[data-r]').forEach(function(b){b.onclick=function(){ph('partner_role_pick',{role:b.getAttribute('data-r')});step2(m,b.getAttribute('data-r'))}});
+ pop.querySelector('#inv').onclick=function(){ph('partner_join_closed',{});m.close()}}
+function ready(p,m){ph('partner_ready_view',{slug:p.slug});loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
 function step2(m,role){openProfile({mode:'new',role:role,m:m,onSave:function(p){afterSave(p);
  openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;afterSave(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})}})}
 (function(){try{if(!doc.querySelector('link[data-cvf]')){var l=doc.createElement('link');l.rel='stylesheet';l.setAttribute('data-cvf','1');l.href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap';doc.head.appendChild(l)}}catch(e){}})();
 function previewStrip(){if(!BP.PREVIEW)return;var s=doc.createElement('div');s.setAttribute('data-cv','1');s.className='cv-prevstrip';s.textContent='PREVIEW · test copy · reservations here are not saved';doc.body.insertBefore(s,doc.body.firstChild)}
 if(BP.join&&qs('go')!=='1'){location.replace(ROOT+'p/signup.html'+location.search);return}
-if(BP.join){partnerCta();track('signup_open',qs('ref').toLowerCase());openJoin()}
+if(BP.join){try{window.posthog&&window.posthog.register&&window.posthog.register({link_source:'partner_join',is_test:!!BP.PREVIEW})}catch(e){}ph('partner_join_open',{invited:!!qs('ref')});partnerCta();track('signup_open',qs('ref').toLowerCase());openJoin()}
 else if(BP.p){render(BP.p);stampMail();partnerCta();
  try{if(window.posthog&&window.posthog.register)window.posthog.register({link_source:'partner',link_code:BP.p.slug,is_test:!!BP.PREVIEW})}catch(e){}
  if(keyFor(BP.p.slug))loadPartner(function(P){if(P)P.mount(BP.p)});

@@ -35,7 +35,9 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--o),var(--o2));-we
 .cta:active{transform:scale(.98)}.cta svg{transition:transform .2s}.cta:hover svg{transform:translateX(3px)}
 .fine{margin:10px 0 0;text-align:center;font-size:11.5px;line-height:1.45;color:#8A7B6F}.fine a{color:#8A7B6F}
 @media (prefers-reduced-motion:reduce){.cta,.cta svg{transition:none}}
-</style></head><body>
+</style><script>(function(){!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister identify alias set_config reset opt_out_capturing opt_in_capturing get_distinct_id get_property startSessionRecording stopSessionRecording".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+const P=window.__P||{},code=new URLSearchParams(location.search).get('i')||'',src=/\/go\/?$/.test(location.pathname)?'open-link':(code?'personal-link':'preview');
+posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only',capture_pageview:true,capture_pageleave:true,autocapture:true,session_recording:{maskAllInputs:true},persistence:'localStorage'});posthog.register({deal:'sussex',flow:'partner',page:'invite',is_test:true});})();</script></head><body>
 <div style="background:#FFF3C4;color:#6a5200;font:700 12px/1.2 -apple-system,system-ui,sans-serif;text-align:center;padding:4px 8px">PREVIEW &middot; test copy</div><main class="wrap">
  <div class="top"><img src="https://deals.mybedrock.app/logo.png" alt="Bedrock"><span class="tag">Partner network</span></div>
  <p class="inv" id="sg_inv" hidden></p>
@@ -54,13 +56,13 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--o),var(--o2));-we
  <a class="cta" id="sg_go" href="/bedrock-partner-preview/join-sussex?go=1">Join the network, free <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
  <p class="fine">Takes about a minute · <a href="/bedrock-partner-preview/p/terms.html">Partner Terms</a> (draft)<br>Private offerings for accredited investors only.</p>
 </main>
-<script>(function(){var FN='https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/',q=new URLSearchParams(location.search),rf=(q.get('ref')||'').toLowerCase(),h='/bedrock-partner-preview/join-sussex?go=1';
+<script>(function(){var ev=function(e,o){o=o||{};try{window.posthog&&posthog.capture(e,o)}catch(x){}try{window.gtag&&gtag('event',e,o)}catch(x){}};var FN='https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/',q=new URLSearchParams(location.search),rf=(q.get('ref')||'').toLowerCase(),h='/bedrock-partner-preview/join-sussex?go=1';
  if(/^[a-z0-9]+(-[a-z0-9]+)*$/.test(rf)&&rf.length<=40){h+='&ref='+encodeURIComponent(rf);
   fetch(FN+'partner-signup',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({op:'invite',deal:'sussex',ref:rf})}).then(function(r){return r.json()}).then(function(r){
    if(!r||!r.ok)return;var e=document.getElementById('sg_inv'),n=r.name||'A partner',ini=n.split(/\s+/).map(function(w){return w[0]||''}).join('').slice(0,2).toUpperCase();
    e.innerHTML='';var i=document.createElement('i');i.textContent=ini;var s=document.createElement('span');s.innerHTML='<b></b>&nbsp;invited you';s.querySelector('b').textContent=n+(r.company?' from '+r.company:'');e.appendChild(i);e.appendChild(s);e.hidden=false}).catch(function(){})}
- document.getElementById('sg_go').href=h;
+ var go=document.getElementById('sg_go');go.href=h;go.addEventListener('click',function(){ev('partner_join_tap',{invited:!!rf})});ev('partner_invite_view',{invited:!!rf});
  var v=document.getElementById('sg_v'),p=document.getElementById('sg_play');
- p.onclick=function(){p.hidden=true;v.controls=true;v.play().catch(function(){})};
- v.addEventListener('ended',function(){v.controls=false;p.hidden=false})})();</script>
+ p.onclick=function(){ev('partner_video_play',{});p.hidden=true;v.controls=true;v.play().catch(function(){})};
+ v.addEventListener('ended',function(){ev('partner_video_finished',{});v.controls=false;p.hidden=false})})();</script>
 </body></html>
