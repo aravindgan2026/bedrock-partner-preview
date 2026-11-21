@@ -8,7 +8,7 @@ var EX_IN=10000,CUT_DEFAULT=1; /* the inviting partner picks their cut of an inv
 function feeLine(base){return 'Your fee on this deal: '+base+'%'}
 function topLine(top){return 'Sell the most shares on this deal and your fee goes to '+top+'%.'}
 function feeNote(rate){return 'That is '+rate+'% of the money your people put in. Example: they put in $'+EX_IN.toLocaleString('en-US')+', you earn $'+(EX_IN*rate/100).toLocaleString('en-US')+'. It counts once their money is in.'}
-function shareText(p,url){return 'Bedrock has a new real estate investment: own part of an Orlando house flip. Sign up by Monday, Nov 23.'+(p&&p.name?' Shared by '+p.name+'.':'')+' '+url}
+function shareText(p,url){if(p&&p.role==='job')return 'Hi, I just joined Bedrock as a partner and thought of you for one real estate deal: own part of an Orlando house flip. It is for accredited investors only, and there is no pressure. Take a look: '+url+' (sign up by Monday, Nov 23)';/* Indeed people: a personal opener (review 11-21) */return 'Bedrock has a new real estate investment: own part of an Orlando house flip. Sign up by Monday, Nov 23.'+(p&&p.name?' Shared by '+p.name+'.':'')+' '+url}
 function copyText(u,btn){var done=function(){var o=btn.querySelector('.lbl')||btn;var t=o.textContent;o.textContent='Copied';setTimeout(function(){o.textContent=t},1400)};
  function fb(){var t=doc.createElement('textarea');t.value=u;t.style.position='fixed';t.style.opacity='0';doc.body.appendChild(t);t.select();try{doc.execCommand('copy')}catch(e){}doc.body.removeChild(t);done()}
  try{navigator.clipboard.writeText(u).then(done,fb)}catch(e){fb()}}
@@ -20,11 +20,12 @@ function openSheet(p){var url=C.prettyUrl(p);if(!SAFE(url))return;var e=encodeUR
   '<a class="cv-opt" id="shsms" href="#"><span class="cv-oi">'+ic('message')+'</span>Text message</a>'+
   '<button type="button" class="cv-opt" id="shcopy"><span class="cv-oi">'+ic('copy')+'</span><span class="lbl">Copy message</span></button>'+
   (navigator.share?'<button type="button" class="cv-opt" id="shmore"><span class="cv-oi">'+ic('share')+'</span>More apps</button>':'')+
+  '<p class="cv-okmsg" id="shdone" role="status" hidden>Nice! You sent one. Next: send it to 2 more people you know. When they open it, it shows in your portal.</p>'+
   '<button type="button" class="cv-btn cv-cancel" id="shx">Cancel</button>';
  var m=C.modal(h,{sheet:1,label:'Share my page'}),ov=m.pop,ta=ov.querySelector('#shmsg');ta.value=msg;
  var bad=false;function sync(){var t=ta.value;bad=!SAFE(t);ov.querySelector('#sherr').textContent=bad?'This message has your portal login link in it. Take it out. Never send that link.':'';
   ov.querySelector('#shwa').href=bad?'#':'https://wa.me/?text='+e(t);ov.querySelector('#shsms').href=bad?'#':'sms:?&body='+e(t)}
- ov.querySelector('#shwa').onclick=ov.querySelector('#shsms').onclick=function(ev){if(bad)ev.preventDefault()};
+ ov.querySelector('#shwa').onclick=ov.querySelector('#shsms').onclick=function(ev){if(bad){ev.preventDefault();return}if(p.role==='job'){var d=ov.querySelector('#shdone');d.hidden=false;ov.querySelector('#shx').textContent='Done'}};
  ta.oninput=sync;sync();ov.querySelector('#shx').onclick=m.close;
  ov.querySelector('#shcopy').onclick=function(){if(!bad)copyText(ta.value,this)};
  var mo=ov.querySelector('#shmore');if(mo)mo.onclick=function(){if(!bad)navigator.share({text:ta.value}).catch(function(){})}}
