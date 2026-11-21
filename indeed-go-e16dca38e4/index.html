@@ -38,6 +38,12 @@ button.btn:disabled{opacity:.5;cursor:default}
 .small{font-size:13px;text-align:center}
 .facts{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.45;color:var(--fg)}
 .facts b{color:var(--accent)}
+.msn h2{font-size:21px}.mlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.mlist li{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:16px;line-height:1.35;color:var(--fg)}.mlist li:last-child{border-bottom:0}
+.mlist i{flex:0 0 28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:14px;background:var(--line);color:var(--soft)}
+.mbar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}.mbar i{display:block;height:100%;width:6%;background:linear-gradient(90deg,var(--accent),#F59E0B);border-radius:99px}
+.h3{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin:4px 0 0}
+.who{display:flex;flex-direction:column;gap:10px}.who div{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg)}.who b{display:block;font-size:16px;color:var(--fg);margin-bottom:3px}.who span{font-size:14px;line-height:1.45;color:var(--soft)}
 .sticky{position:fixed;left:0;right:0;bottom:0;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent);transition:opacity .2s}
 .sticky a{display:block;max-width:440px;margin:0 auto;text-align:center;background:var(--accent);color:#fff;font-weight:800;font-size:18px;text-decoration:none;padding:15px;border-radius:14px}
 .sticky.off{opacity:0;pointer-events:none}
@@ -50,12 +56,31 @@ body{padding-bottom:96px}
   <p class="eyebrow">For people who applied on Indeed</p>
   <h1>You applied to work with Bedrock. Thank you!</h1>
   <ul class="facts">
-    <li><b>The job:</b> share one real estate deal with people you know, and with realtors and loan officers.</li>
+    <li><b>The job:</b> share one real estate deal with people you know, realtors, financial advisors and loan officers.</li>
     <li><b>First step:</b> get your own page, then send it to your first 3 people today.</li>
     <li><b>How you get paid:</b> you earn 6% of what your people invest, paid after their money is in. It may be nothing at first. Do well, and this can lead to a full-time job with us.</li>
   </ul>
   <p>Watch this 2-minute video. Short on time? You can skip it: the 3 steps below are enough.</p>
   <div class="player"><video src="welcome-v5.mp4" poster="welcome-v5.jpg" controls playsinline preload="metadata"></video></div>
+
+  <section class="card msn" aria-labelledby="msn_h">
+    <h2 id="msn_h">&#127919; Your first 5 missions</h2>
+    <p>Get your page below. Then your portal checks off each mission as you go, so you always know your next step.</p>
+    <div class="mbar" aria-hidden="true"><i></i></div>
+    <ol class="mlist">
+      <li><i>1</i>Share your page with your first person</li>
+      <li><i>2</i>Share it 3 times</li>
+      <li><i>3</i>Invite a realtor, financial advisor or loan officer</li>
+      <li><i>4</i>Someone opens your page</li>
+      <li><i>5</i>Someone holds a spot</li>
+    </ol>
+    <p class="h3">Who to send it to</p>
+    <div class="who">
+      <div><b>&#128075; People you know</b><span>Friends, family, a former boss, people who own a home or run a business. One person at a time.</span></div>
+      <div><b>&#127969; Realtors</b><span>They know people buying and selling homes. Invite them to make their own page.</span></div>
+      <div><b>&#128188; Financial advisors and loan officers</b><span>They talk with people who have savings every day. Invite them the same way.</span></div>
+    </div>
+  </section>
 
   <form class="card" id="go" novalidate>
     <h2>Get started</h2>
@@ -63,7 +88,7 @@ body{padding-bottom:96px}
     <ol>
       <li>Type your name, email and phone.</li>
       <li>Get your page and your portal.</li>
-      <li>Send it to people you know, realtors and loan officers.</li>
+      <li>Send it to people you know, realtors, financial advisors and loan officers.</li>
     </ol>
     <label class="f">Your full name<input type="text" id="f_name" autocomplete="name" maxlength="120" required></label>
     <label class="f">Email<input type="email" id="f_email" autocomplete="email" maxlength="120" required></label>
