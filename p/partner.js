@@ -65,7 +65,8 @@ function ready(p,m){mount(p);var base=p.base||6,link=C.privateUrl(p);
  (p.team?'<p class="cv-sub" style="text-align:center;margin:4px 0 0">'+esc(p.team.name||'The partner who invited you')+' brought you on, so they take '+p.team.cut+'% of your '+base+'% fee on each sale. Your Tracker shows it.</p>':'')+
  '<div class="cv-keybox"><b>Save your private link</b><span>It opens your Tracker and lets you edit your page. Keep it to yourself. Your share link is different and safe to send.</span>'+
  '<button type="button" class="cv-btn cv-ghost" id="keycopy"><span class="lbl">Copy my private link</span></button></div>'+
- '<button type="button" class="cv-btn cv-huge" id="sh3">'+ic('share',26)+'Share my page</button><button type="button" class="cv-btn cv-link" id="see">See my page</button>','#sh3');
+ '<button type="button" class="cv-btn cv-huge" id="sh3">'+ic('share',26)+'Share my page</button>'+(p.logo?'':'<button type="button" class="cv-btn cv-ghost" id="cust">Add my logo and colors</button>')+'<button type="button" class="cv-btn cv-link" id="see">See my page</button>','#sh3');
+ var cb=m.pop.querySelector('#cust');if(cb)cb.onclick=function(){C.ph&&C.ph('partner_customize_open',{});C.openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;C.render(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})};
  m.pop.querySelector('#keycopy').onclick=function(){copyText(link,this)};
  m.pop.querySelector('#sh3').onclick=function(){sharePage(p)};m.pop.querySelector('#see').onclick=m.close}
 function cutOf(v,base){base=base||6;v=parseFloat(v);return isFinite(v)?Math.max(0,Math.min(base,Math.round(v*2)/2)):0}

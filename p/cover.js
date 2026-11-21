@@ -99,7 +99,7 @@ function render(p){CUR=p;applySkin(p);banner(p);welcome(p)}
 function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0=o.p||{},m=o.m||modal('',{label:cust?'Customize your page':edit?'Edit my page':'Sign up'});
  var st={anon:!!p0.anon,logo:p0.logo||'',photo:p0.photo||'',a:p0.brand||SCHEMES[0].a,b:p0.brand2||SCHEMES[0].b,scheme:p0.scheme||'',touched:!!p0.brand,lock:!!p0.logo,newLogo:false,newPhoto:false};
  if(!st.scheme){st.scheme='custom';SCHEMES.forEach(function(s){if(s.a.toLowerCase()===String(st.a).toLowerCase()&&s.b.toLowerCase()===String(st.b).toLowerCase())st.scheme=s.id});if(!edit&&!p0.brand)st.scheme=SCHEMES[0].id}
- var h=(cust?'<p class="cv-step">Step 2 of 2</p><h3>Customize your page</h3><p class="cv-sub">Add your logo, photo and colors. You can skip this and do it any time.</p>':edit?'<h3>Edit my page</h3><p class="cv-sub">Change anything you like, then save.</p>':'<p class="cv-inv" id="invl" hidden></p><p class="cv-step">Step 1 of 2</p><h3>Sign up</h3>')+
+ var h=(cust?'<h3>Add your logo and colors</h3><p class="cv-sub">Add your logo, photo and colors. You can skip this and do it any time.</p>':edit?'<h3>Edit my page</h3><p class="cv-sub">Change anything you like, then save.</p>':'<p class="cv-inv" id="invl" hidden></p><h3>Sign up</h3>')+
   '<div id="basic"'+(cust?' hidden':'')+'>'+
   (edit?'':'<div class="cv-lbl">I work in</div><div class="cv-schg" role="group" aria-label="I work in" style="margin-bottom:14px"><button type="button" class="cv-lbb" data-role="re" aria-pressed="'+(o.role==='re')+'">Real estate</button><button type="button" class="cv-lbb" data-role="fin" aria-pressed="'+(o.role==='fin')+'">Finance</button></div>')+
   '<label class="cv-lbl">Your name<input type="text" id="f_name" autocomplete="name" maxlength="120"></label>'+
@@ -199,7 +199,7 @@ window.BPC={ph:ph,esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=705978f8';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=d4af081a';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
@@ -252,8 +252,8 @@ function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, 
  pop.querySelectorAll('button[data-r]').forEach(function(b){b.onclick=function(){ph('partner_role_pick',{role:b.getAttribute('data-r')});step2(m,b.getAttribute('data-r'))}});
  pop.querySelector('#inv').onclick=function(){ph('partner_join_closed',{});m.close()}}
 function ready(p,m){ph('partner_ready_view',{slug:p.slug});loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
-function step2(m,role){openProfile({mode:'new',role:role,m:m,onSave:function(p){afterSave(p);
- openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;afterSave(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})}})}
+/* operator 11-20 late: "Move it after sign-up": sign-up goes straight to the ready screen; logo and colors are a button there */
+function step2(m,role){openProfile({mode:'new',role:role,m:m,onSave:function(p){afterSave(p);ready(p,m)}})}
 (function(){try{if(!doc.querySelector('link[data-cvf]')){var l=doc.createElement('link');l.rel='stylesheet';l.setAttribute('data-cvf','1');l.href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap';doc.head.appendChild(l)}}catch(e){}})();
 function previewStrip(){if(!BP.PREVIEW)return;var s=doc.createElement('div');s.setAttribute('data-cv','1');s.className='cv-prevstrip';s.textContent='PREVIEW · test copy · reservations here are not saved';doc.body.insertBefore(s,doc.body.firstChild)}
 if(BP.join&&qs('go')!=='1'){location.replace(ROOT+'p/signup.html'+location.search);return}
