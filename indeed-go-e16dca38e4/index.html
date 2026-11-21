@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Welcome to Bedrock</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#FBF6EF;--fg:#1A120C;--soft:#6B5D52;--accent:#FF4D00;--line:#ECE3D9;--card:#FFFFFF;--err:#B42318;--display:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
+@media (prefers-color-scheme: dark){:root{--bg:#17110C;--fg:#F6EEE6;--soft:#B9AA9C;--accent:#FF6A26;--line:#3A2E25;--card:#221A14;--err:#FF8A80;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);padding:28px max(16px,env(safe-area-inset-left,0px)) 40px}
+main{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.logo{height:28px;width:auto;align-self:flex-start}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0}
+h1{font-size:26px;line-height:1.15;letter-spacing:-.02em;margin:0}
+h2{font-size:24px;line-height:1.2;letter-spacing:-.02em;margin:0}
+.player{background:#000;border-radius:24px;overflow:hidden;border:1px solid var(--line);aspect-ratio:9/16}
+video{display:block;width:100%;height:100%;object-fit:contain;background:#000}
+p{margin:0;font-size:16px;line-height:1.5;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px}
+ol{margin:0;padding-left:22px;color:var(--fg);font-size:16px;line-height:1.6}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:var(--fg)}
+input[type=text],input[type=email],input[type=tel]{font:inherit;font-size:17px;font-weight:500;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);width:100%}
+input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.4;color:var(--fg)}
+.chk input{width:20px;height:20px;margin-top:1px;accent-color:var(--accent)}
+.chk a{color:var(--accent)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button.btn{font:inherit;display:block;width:100%;text-align:center;background:var(--accent);color:#fff;font-weight:800;font-size:18px;border:0;padding:16px;border-radius:14px;cursor:pointer}
+button.btn:disabled{opacity:.5;cursor:default}
+.err{color:var(--err);font-size:15px;font-weight:700}
+.err:empty{display:none}
+.fine{font-size:12px;color:var(--soft)}
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="logo.png" alt="Bedrock">
+  <p class="eyebrow">For people who applied on Indeed</p>
+  <h1>You applied to work with Bedrock. Thank you!</h1>
+  <p>Watch this first (2 minutes): what we do, what the job is, and what to do today.</p>
+  <div class="player"><video src="welcome-v5.mp4" poster="welcome-v5.jpg" controls playsinline preload="metadata"></video></div>
+
+  <form class="card" id="go" novalidate>
+    <h2>Get started</h2>
+    <p>Set up in one minute. You get your own page for the deal, with your name on it, and a message ready to send.</p>
+    <ol>
+      <li>Type your name, email and phone.</li>
+      <li>Get your page and your portal.</li>
+      <li>Send it to people you know, realtors and loan officers.</li>
+    </ol>
+    <label class="f">Your full name<input type="text" id="f_name" autocomplete="name" maxlength="120" required></label>
+    <label class="f">Email<input type="email" id="f_email" autocomplete="email" maxlength="120" required></label>
+    <label class="f">Phone<input type="tel" id="f_phone" autocomplete="tel" maxlength="40" required></label>
+    <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" id="f_hp" tabindex="-1" autocomplete="off"></label></div>
+    <label class="chk"><input type="checkbox" id="f_terms"><span>I agree to the <a href="/p/terms.html" id="termsLink" target="_blank" rel="noopener">Partner Terms</a></span></label>
+    <p class="err" id="f_err" role="alert"></p>
+    <button type="submit" class="btn" id="f_go">Get started</button>
+  </form>
+
+  <p>This deal's sign-up ends Monday, November 23.</p>
+  <p class="fine">Private offerings for accredited investors only. Not an offer to the public. Partner terms are a draft.</p>
+</main>
+<script>
+(function(){
+  var FN='https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/';
+  /* live site = root; test copy on the preview site = the preview repo root */
+  var ROOT=location.hostname==='deals.mybedrock.app'?'/':(location.pathname.split('/').slice(0,2).join('/')+'/');
+  var TV='', busy=false;
+  var WHY={check:'Please type your full name.',contact:'Please check your email and phone number.',terms:'Please tick the box to agree to the Partner Terms.',
+    closed:'Sign-ups are closed right now.',slow:'Too many tries. Please wait a few minutes and try again.',reserved:'Please use your own name.',
+    full:'That name is taken. Please add your middle initial.',save:'We could not save that. Please try again.',net:'We could not reach our server. Check your internet and try again.'};
+  function $(id){return document.getElementById(id)}
+  $('termsLink').href=ROOT+'p/terms.html';
+  function post(fn,body){
+    return new Promise(function(res){var done=false,tm=setTimeout(function(){if(!done){done=true;res({ok:false,why:'net'})}},15000);
+      fetch(FN+fn,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
+        .then(function(r){return r.json()}).then(function(j){if(!done){done=true;clearTimeout(tm);res(j||{ok:false})}})
+        .catch(function(){if(!done){done=true;clearTimeout(tm);res({ok:false,why:'net'})}});});
+  }
+  /* the current terms version, read the same way the partner pages read it */
+  post('partner-public',{op:'brand',slug:'join-sussex'}).then(function(r){if(r&&r.ok&&r.tv)TV=String(r.tv)});
+  function err(t){$('f_err').textContent=t||''}
+  $('go').addEventListener('submit',function(e){
+    e.preventDefault(); if(busy)return; err('');
+    var name=$('f_name').value.trim(), email=$('f_email').value.trim().toLowerCase(), phone=$('f_phone').value.trim();
+    if(!name){err(WHY.check);return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||phone.replace(/\D/g,'').length<7){err(WHY.contact);return}
+    if(!$('f_terms').checked){err(WHY.terms);return}
+    if(!TV){err(WHY.net);return}
+    busy=true; $('f_go').disabled=true; $('f_go').textContent='Setting you up…';
+    post('partner-signup',{op:'signup',deal:'sussex',role:'job',src:'indeed',name:name,email:email,phone:phone,terms:true,tv:TV,hp:$('f_hp').value})
+      .then(function(r){
+        if(!r||!r.ok||!r.slug||!r.key){busy=false;$('f_go').disabled=false;$('f_go').textContent='Get started';err((r&&WHY[r.why])||'Something went wrong. Please try again.');return}
+        try{localStorage.setItem('bp_key_'+r.slug,r.key)}catch(x){}
+        try{localStorage.setItem('bp_me',r.slug)}catch(x){}
+        location.href=ROOT+'p/tracker.html?p='+encodeURIComponent(r.slug)+'&new=1';
+      });
+  });
+})();
+</script>
+</body>
+</html>
