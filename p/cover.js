@@ -104,7 +104,7 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
   (edit?'':'<div class="cv-lbl">I work in</div><div class="cv-schg" role="group" aria-label="I work in" style="margin-bottom:14px"><button type="button" class="cv-lbb" data-role="re" aria-pressed="'+(o.role==='re')+'">Real estate</button><button type="button" class="cv-lbb" data-role="fin" aria-pressed="'+(o.role==='fin')+'">Finance</button></div>')+
   '<label class="cv-lbl">Your name<input type="text" id="f_name" autocomplete="name" maxlength="120"></label>'+
   '<label class="cv-lbl">Company<input type="text" id="f_co" autocomplete="organization" maxlength="120"></label>'+
-  (edit?'':'<label class="cv-lbl">Phone or email<input type="text" id="f_ct" autocomplete="email" maxlength="200" placeholder="So we can reach you and pay you"></label>')+
+  (edit?'':'<label class="cv-lbl">Phone or email<input type="text" id="f_ct" autocomplete="on" maxlength="200" placeholder="So we can reach you and pay you"></label>')+
   '<div class="cv-ylink" id="ylink"></div>'+
   '<input type="text" id="f_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">'+
   '</div>'+
@@ -199,7 +199,7 @@ window.BPC={ph:ph,esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=68110912';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=705978f8';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}

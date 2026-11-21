@@ -7,7 +7,7 @@ var EX_IN=10000,CUT_DEFAULT=1; /* the inviting partner picks their cut of an inv
 function feeLine(base){return 'Your fee on this deal: '+base+'%'}
 function topLine(top){return 'Sell the most shares on this deal and your fee goes to '+top+'%.'}
 function feeNote(rate){return 'That is '+rate+'% of the money your people put in. Example: they put in $'+EX_IN.toLocaleString('en-US')+', you earn $'+(EX_IN*rate/100).toLocaleString('en-US')+'. It counts once their money is in.'}
-function shareText(p,url){return (p&&p.company?p.company:'Bedrock')+' has a new real estate investment: own part of an Orlando house flip. Sign up by Monday, Nov 23. '+url}
+function shareText(p,url){return 'Bedrock has a new real estate investment: own part of an Orlando house flip. Sign up by Monday, Nov 23.'+(p&&p.name?' Shared by '+p.name+'.':'')+' '+url}
 function copyText(u,btn){var done=function(){var o=btn.querySelector('.lbl')||btn;var t=o.textContent;o.textContent='Copied';setTimeout(function(){o.textContent=t},1400)};
  function fb(){var t=doc.createElement('textarea');t.value=u;t.style.position='fixed';t.style.opacity='0';doc.body.appendChild(t);t.select();try{doc.execCommand('copy')}catch(e){}doc.body.removeChild(t);done()}
  try{navigator.clipboard.writeText(u).then(done,fb)}catch(e){fb()}}
