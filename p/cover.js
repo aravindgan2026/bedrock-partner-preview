@@ -18,7 +18,7 @@ function initials(n){var p=String(n||'').replace(/[^A-Za-z0-9\s]/g,' ').trim().s
 function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
 function qs(n){try{return new URL(location.href).searchParams.get(n)||''}catch(e){return ''}}
-function keyFor(slug){var k=lsGet('bp_key_'+slug,'');return /^[0-9a-f]{64}$/.test(k)?k:''}
+function keyFor(slug){var k=lsGet('bp_key_'+slug,'');if(!k){try{k=localStorage.getItem('bp_key_'+slug)||''}catch(e){}}/* also take a key saved as plain text (Indeed page, 11-21) */return /^[0-9a-f]{64}$/.test(k)?k:''}
 function prettyUrl(p){return SITE_URL+'/'+p.slug}
 /* the portal login link. It does NOT start with the share link, so the two cannot be mixed up. Never used by a share button. */
 function privateUrl(p){var k=keyFor(p.slug);return k?SITE_URL+'/p/tracker.html#t='+k+'&p='+encodeURIComponent(p.slug):''}
@@ -204,7 +204,7 @@ window.BPC={keySlugs:keySlugs,signOut:signOut,ph:ph,esc:esc,ic:ic,initials:initi
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner.js holds the partner-only wording. Here it is fetched ONLY on the sign-up page, for the one "invited by" line. It is never loaded on a partner's public page. ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=441cd2ab';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=a24572d5';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
