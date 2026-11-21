@@ -96,8 +96,8 @@ button.btn:disabled{opacity:.5;cursor:default}
     post('partner-signup',{op:'signup',deal:'sussex',role:'job',src:'indeed',name:name,email:email,phone:phone,terms:true,tv:TV,hp:$('f_hp').value})
       .then(function(r){
         if(!r||!r.ok||!r.slug||!r.key){busy=false;$('f_go').disabled=false;$('f_go').textContent='Get started';err((r&&WHY[r.why])||'Something went wrong. Please try again.');return}
-        try{localStorage.setItem('bp_key_'+r.slug,r.key)}catch(x){}
-        try{localStorage.setItem('bp_me',r.slug)}catch(x){}
+        try{localStorage.setItem('bp_key_'+r.slug,JSON.stringify(r.key))}catch(x){}
+        try{localStorage.setItem('bp_me',JSON.stringify(r.slug))}catch(x){}
         location.href=ROOT+'p/tracker.html?p='+encodeURIComponent(r.slug)+'&new=1';
       });
   });
