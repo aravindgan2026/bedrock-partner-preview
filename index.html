@@ -12,6 +12,8 @@ if(!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)||slug.length>40){nf();return}
 const h=/(?:^#|&)t=([0-9a-f]{64})(?:&|$)/.exec(location.hash);
 /* A login key in the link is never kept here. This page is always the visitor view. An old private link (/<slug>#t=key) is handed to the portal, which checks it with our server before keeping it. */
 if(h){location.replace(ROOT+'p/tracker.html#t='+h[1]+'&p='+encodeURIComponent(slug));return}
+/* A broken or partial login key never stays in the address bar, so it cannot be copied into a share. */
+if(/(?:^#|&)t=/.test(location.hash)){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
 const d=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4)),c=>c.charCodeAt(0));
 (async()=>{let r=null;
 try{r=await (await fetch(FN+'partner-public',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({op:'brand',slug:slug})})).json()}
