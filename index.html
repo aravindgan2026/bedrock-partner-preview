@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><title>Bedrock</title>
+<style>body{margin:0;background:#FBF7F2;font-family:system-ui,-apple-system,sans-serif;color:#3B2716;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:24px}</style></head>
+<body><p id="m">Opening the deal page&hellip;</p><script>
+(function(){const CFG={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "DEAL": "sussex"},ROOT=CFG.ROOT,FN=CFG.FN,PREVIEW=CFG.PREVIEW;
+const msg=document.getElementById('m');
+function nf(t){msg.textContent=t||'We could not find that page. Check the link and try again.'}
+const path=location.pathname;if(path.indexOf(ROOT)!==0&&path+'/'!==ROOT){nf();return}
+let slug='';try{slug=decodeURIComponent(path.slice(ROOT.length)).replace(/\/+$/,'').toLowerCase()}catch(e){}
+if(PREVIEW&&(!slug||slug==='index.html'))slug='join-'+CFG.DEAL;
+if(!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)||slug.length>40){nf();return}
+const h=/(?:^#|&)t=([0-9a-f]{64})(?:&|$)/.exec(location.hash);
+if(h){try{localStorage.setItem('bp_key_'+slug,JSON.stringify(h[1]));localStorage.setItem('bp_me',JSON.stringify(slug))}catch(e){}try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+const d=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4)),c=>c.charCodeAt(0));
+(async()=>{let r=null;
+try{r=await (await fetch(FN+'partner-public',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({op:'brand',slug:slug})})).json()}
+catch(e){nf('We could not reach our server. Check your internet and try again.');return}
+if(!r||!r.ok){nf(r&&r.why==='closed'?'This page is not open right now. Please check back soon.':(r&&r.why==='slow'?'Too many tries. Please wait a few minutes and try again.':''));return}
+if(!/^p\/sx-[0-9a-f]{8}\.json$/.test(String(r.file))){nf();return}
+try{const B=await (await fetch(ROOT+r.file,{cache:'no-cache'})).json();
+const key=await crypto.subtle.importKey('raw',d(r.k),'AES-GCM',false,['decrypt']);
+const html=new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:d(B.iv)},key,d(B.ct)));
+window.__BP={ROOT:ROOT,FN:FN,PREVIEW:PREVIEW,deal:r.deal,tv:r.tv,join:!!r.join,p:r.p||null};
+
+/* PREVIEW ONLY: no PostHog, and the page's own "Hold my spot" and papers boxes answer here instead of saving. */
+const nop=new Proxy(function(){},{get:(t,k)=>k==='__SV'?1:(k==='then'||typeof k==='symbol'?undefined:nop),apply:()=>undefined});window.posthog=nop;
+const F0=window.fetch.bind(window);window.fetch=function(u,o){const s=String(u&&u.url||u);if(/\/functions\/v1\/(hold|vault)$/.test(s))return Promise.resolve(new Response('{"ok":true}',{status:200,headers:{'content-type':'application/json'}}));return F0(u,o)};
+
+const n=new DOMParser().parseFromString(html,'text/html');
+document.head.replaceWith(document.adoptNode(n.head));document.body.replaceWith(document.adoptNode(n.body));document.documentElement.lang='en';
+const rb=document.createElement('meta');rb.name='robots';rb.content='noindex,nofollow,noarchive';document.head.appendChild(rb);
+const l=document.createElement('link');l.rel='stylesheet';l.href=ROOT+'p/cover.css';document.head.appendChild(l);
+for(const o of [...document.querySelectorAll('script')]){const x=document.createElement('script');x.textContent=o.textContent;o.replaceWith(x);}
+const s=document.createElement('script');s.src=ROOT+'p/cover.js';document.body.appendChild(s);}
+catch(e){nf('This page could not open. Please try again in a minute.')}})();})();
+</script></body></html>
