@@ -203,7 +203,7 @@ window.BPC={keySlugs:keySlugs,signOut:signOut,ph:ph,esc:esc,ic:ic,initials:initi
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner.js holds the partner-only wording. Here it is fetched ONLY on the sign-up page, for the one "invited by" line. It is never loaded on a partner's public page. ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=e1121sep';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=9022639f';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
@@ -249,7 +249,7 @@ function openJoin(){var m=modal('',{label:'Partner sign up'});step2(m,null)}
 /* first screen: what this is (video + 3 lines), then one question. Operator 11-20: "wheres the video ... the workflow is confusing" */
 function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, partner &#128075;</h3>':'<h3>Become a Bedrock partner</h3><p class="cv-sub">For real estate and finance pros. Free.</p>'+
  '<div class="cv-vid"><video src="'+ROOT+'p/partner-intro-v7.mp4" poster="'+ROOT+'p/partner-poster-v7.jpg" controls playsinline preload="none"></video></div>'+
- '<ol class="cv-how"><li><b>Get your own page</b> for this deal, with your name and logo.</li><li><b>Send it</b> to people you know.</li><li><b>Get paid</b> when they invest. Your Tracker shows how it is going.</li></ol>')+
+ '<ol class="cv-how"><li><b>Get your own page</b> for this deal, with your name and logo.</li><li><b>Send it</b> to people you know.</li><li><b>Get paid</b> when they invest. Your partner portal shows how it is going.</li></ol>')+
  '<p class="cv-step">Step 1 of 3</p><p class="cv-ask">What do you do?</p>'+
  '<button type="button" class="cv-btn" data-r="re">I\'m in real estate</button><button type="button" class="cv-btn" data-r="fin">I\'m in finance &amp; investments</button>'+
  '<button type="button" class="cv-btn cv-link" id="inv">I just want to see the deal</button>');var pop=m.pop;

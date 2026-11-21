@@ -31,12 +31,12 @@ function openSheet(p){var url=C.prettyUrl(p);if(!SAFE(url))return;var e=encodeUR
 function sharePage(p){openSheet(p)}
 function copyShareLink(p,btn){var u=C.prettyUrl(p);if(SAFE(u))copyText(u,btn)}
 var STATUS={waiting:'Waiting for our team',done:'Done',closed:'Closed'};
-function openFix(p){var m=C.modal('',{label:'Ask us to fix something'}),shot='',busy=false;
- m.set('<h3>Ask us to fix something</h3><p class="cv-sub">Tell us what to change on your page.</p>'+
-  '<label class="cv-lbl" for="cr_text">What should we change on your page?</label><textarea class="cv-msg" id="cr_text" rows="4" maxlength="2000" placeholder="Example: make my logo bigger"></textarea>'+
+function openFix(p){var m=C.modal('',{label:'Ask us anything'}),shot='',busy=false;
+ m.set('<h3>Ask us anything</h3><p class="cv-sub">A question, help sharing, or a change to your page. A person on our team reads every message. We check every day.</p>'+
+  '<label class="cv-lbl" for="cr_text">What do you need?</label><textarea class="cv-msg" id="cr_text" rows="4" maxlength="2000" placeholder="Example: how should I start the message?"></textarea>'+
   '<div class="cv-bl">Screenshot or photo (optional)</div><div class="cv-lp"><div id="crw"></div><div class="cv-bcol"><button type="button" class="cv-btn cv-ghost" id="cr_pick">Add a screenshot</button><button type="button" class="cv-btn cv-link" id="cr_rm">Remove</button></div></div><input type="file" id="cr_file" accept="image/png,image/jpeg,image/webp" style="display:none">'+
   '<p class="cv-err" id="cr_err" role="alert"></p><button type="button" class="cv-btn" id="cr_send" disabled>Send</button>'+
-  '<div class="cv-okmsg" id="cr_ok" role="status" hidden>Got it. Our team will fix it and let you know.</div><h4>Your requests</h4><div id="cr_list"><p style="margin:0;color:var(--cv-soft)">Loading&hellip;</p></div>','#cr_text');
+  '<div class="cv-okmsg" id="cr_ok" role="status" hidden>Got it. Our team will get back to you at the phone or email you gave us.</div><h4>Your requests</h4><div id="cr_list"><p style="margin:0;color:var(--cv-soft)">Loading&hellip;</p></div>','#cr_text');
  var pop=m.pop,q=function(s){return pop.querySelector(s)};
  function thumb(){q('#crw').innerHTML=shot?'<img src="'+esc(shot)+'" alt="Your screenshot">':'<div class="cv-ph">Photo</div>';q('#cr_rm').hidden=!shot;q('#cr_pick').textContent=shot?'Change screenshot':'Add a screenshot'}
  function show(r){if(m.closed)return;var rs=(r&&r.ok&&r.list)||[];
