@@ -185,3 +185,4 @@ body.cv-hasbar .sb{bottom:calc(68px + env(safe-area-inset-bottom))}
 .cv-pop .cv-keybox .cv-btn{min-height:46px;margin-top:0;font-size:15px}
 .cv-pop .cv-btn.cv-ghost{border-radius:14px}
 @media(prefers-reduced-motion:reduce){.cv-rdy .cv-ready{animation:none}}
+.cv-pop:has(.cv-s1){padding-top:0}.cv-pop:has(.cv-s1) .cv-in{padding-top:22px}.cv-pop h3:has(+ .cv-s1){padding-right:56px}
