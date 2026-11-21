@@ -151,3 +151,5 @@ body.cv-hasbar .sb{bottom:calc(68px + env(safe-area-inset-bottom))}
 .cv-inv{margin-right:0!important}
 .cv-ready{width:64px;height:64px;margin:0 auto 10px;border-radius:50%;background:linear-gradient(135deg,#FF5A10,#E84300);color:#fff;font-size:34px;font-weight:800;display:grid;place-items:center}
 .cv-pn-t{flex:1}
+.cv-lbb[aria-pressed="true"]{border-color:var(--cv-ink);background:var(--cv-tint);font-weight:700}
+.cv-schg .cv-lbb[data-role]{justify-content:center;text-align:center}
