@@ -57,7 +57,7 @@ body.cv-hasbar{padding-bottom:84px}body.cv-hasbar .sb{bottom:calc(88px + env(saf
 .cv-pvs{margin-top:10px;border-radius:14px;overflow:hidden;border:1px solid var(--cv-line)}
 .cv-pvh{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;font-weight:700}.cv-pvh img{height:34px;width:auto;max-width:90px;background:#fff;border-radius:8px;padding:2px}.cv-pvh img.cv-rd{width:34px}
 .cv-pvb{padding:12px;display:flex;justify-content:center}.cv-pvbtn{display:inline-block;padding:12px 22px;border-radius:14px;font-weight:700}
-.cv-ylink{font-size:14px;color:var(--cv-soft);margin:6px 2px 0;white-space:pre-line;overflow-wrap:anywhere;min-height:3.9em}
+.cv-ylink{font-size:14px;color:var(--cv-soft);margin:6px 2px 0;white-space:pre-line;overflow-wrap:anywhere;}
 .cv-tbul{margin:10px 0 0;padding:10px 14px 10px 30px;background:var(--cv-tint);border-radius:14px;font-size:15px}.cv-tbul li{margin:4px 0}
 .cv-pop a.cv-tl{display:block;margin-top:8px;font-weight:600;min-height:44px;line-height:44px;color:var(--or,#C43B00)}
 .cv-ready{text-align:center;font-size:56px;color:var(--cv-ok);line-height:1}
@@ -134,5 +134,20 @@ body.cv-hasbar .sb{bottom:calc(68px + env(safe-area-inset-bottom))}
 .cv-prevstrip{position:relative;z-index:5;background:#FFF3C4;color:#6a5200;font:700 12px/1.2 -apple-system,system-ui,sans-serif;text-align:center;padding:4px 8px;pointer-events:none}
 
 .cv-vid{margin:12px 0;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:9/16;max-height:52vh;margin-left:auto;margin-right:auto}.cv-vid video{width:100%;height:100%;display:block;object-fit:contain;background:#000}
-.cv-how{margin:4px 0 10px;padding-left:22px;font-size:15px;line-height:1.4}.cv-how li{margin:6px 0}.cv-q{font-weight:700;margin:14px 0 8px;text-align:center}
+.cv-how{margin:4px 0 10px;padding-left:22px;font-size:15px;line-height:1.4}.cv-how li{margin:6px 0}.cv-ask{font-weight:700;margin:16px 0 10px;text-align:center;font-size:17px}
 .cv-plink{margin:18px auto 8px;padding:0 16px;max-width:640px;text-align:center;font-size:13px;color:#8A7B6F}.cv-plink a{color:inherit;text-decoration:underline}
+#ylink{min-height:2.6em}#ylink:empty:before{content:"Your page link will show here.";opacity:.7}
+.cv-inv{margin-right:56px!important}
+.cv-tbul{font-size:14px;line-height:1.4}
+
+/* design pass 11-20 (operator: "parts are still formatted broken") */
+.cv-pop,.cv-sh,.cv-bar a,.cv-bar button,.cv-pcard,.cv-plink{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif!important}
+.cv-pop,.cv-sh{background:#FBF6EF}
+.cv-pop .cv-btn,.cv-sh .cv-btn{font-weight:700}
+.cv-pop{padding-top:56px}.cv-pop .cv-in{padding-top:4px;max-height:calc(94vh - 56px)}
+.cv-sh{padding-top:52px}
+.cv-xb{top:6px;right:8px;width:44px;height:44px;min-height:44px;font-size:26px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.cv-pop h3,.cv-sh h3{padding:0 8px}
+.cv-inv{margin-right:0!important}
+.cv-ready{width:64px;height:64px;margin:0 auto 10px;border-radius:50%;background:linear-gradient(135deg,#FF5A10,#E84300);color:#fff;font-size:34px;font-weight:800;display:grid;place-items:center}
+.cv-pn-t{flex:1}

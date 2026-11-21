@@ -52,7 +52,7 @@ function drop(sel){[].slice.call(doc.querySelectorAll(sel)).forEach(function(n){
 /* the partner's own view of the real page: a sticky tools bar and one small line. No fee wording on the page itself. */
 function mount(p){drop('.cv-bar');drop('.cv-pcard');var tu=C.trackerUrl(p);
  var card=doc.createElement('div');card.className='cv-pcard';card.setAttribute('data-cv','1');
- card.innerHTML='<span class="cv-pn-ic" aria-hidden="true">&#128064;</span><span class="cv-pn-t"><b>Your page</b> looks just like this to the people you send it to.</span><a class="cv-pn-a" href="'+esc(tu)+'">Tracker &rsaquo;</a>';
+ card.innerHTML='<span class="cv-pn-ic" aria-hidden="true">&#128064;</span><span class="cv-pn-t"><b>Your page.</b> This is what people you send it to will see.</span>';
  var anchor=doc.querySelector('.cv-welcome')||doc.querySelector('.nav');if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(card,anchor.nextSibling);
  var bar=doc.createElement('div');bar.className='cv-bar';bar.setAttribute('data-cv','1');
  bar.innerHTML='<a href="'+esc(tu)+'" id="pb_track">'+ic('chart',20)+'Tracker</a><button type="button" class="cv-main" id="pb_share">'+ic('share',20)+'Share</button><button type="button" id="pb_edit" aria-label="Edit my page">'+ic('edit',20)+'Edit page</button><button type="button" id="pb_fix" aria-label="Ask us to fix something">'+ic('chat',20)+'Ask us</button>';
@@ -60,7 +60,7 @@ function mount(p){drop('.cv-bar');drop('.cv-pcard');var tu=C.trackerUrl(p);
  bar.querySelector('#pb_share').onclick=function(){sharePage(p)};bar.querySelector('#pb_edit').onclick=function(){editMe(p)};bar.querySelector('#pb_fix').onclick=function(){openFix(p)}}
 /* last step of sign-up: the private link is the only way back in, so it is shown and saved here */
 function ready(p,m){mount(p);var base=p.base||6,link=C.privateUrl(p);
- m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box. Send it to people you know.</p>'+
+ m.set('<div class="cv-ready">&#10003;</div><h3>Your page is live</h3><p class="cv-sub">Share it with people you know. It is the real deal page, with your name on it.</p>'+
  '<p style="text-align:center;font-weight:700;margin:0">'+esc(feeLine(base))+'</p>'+
  (p.team?'<p class="cv-sub" style="text-align:center;margin:4px 0 0">'+esc(p.team.name||'The partner who invited you')+' brought you on, so they take '+p.team.cut+'% of your '+base+'% fee on each sale. Your Tracker shows it.</p>':'')+
  '<div class="cv-keybox"><b>Save your private link</b><span>It opens your Tracker and lets you edit your page. Keep it to yourself. Your share link is different and safe to send.</span>'+

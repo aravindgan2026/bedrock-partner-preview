@@ -114,7 +114,7 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
   '<div class="cv-cust" id="cust"><label class="cv-cc">Main color<input type="color" id="c_a" value="#C43B00"></label><label class="cv-cc">Light color<input type="color" id="c_b" value="#FFB088"></label></div>'+
   '<div class="cv-tiny" style="margin-top:10px">How the top of your page will look</div><div class="cv-pvs" id="pvs"></div>'+
   '<div class="cv-bl">Show me on the leaderboard as</div><div class="cv-schg" role="group" aria-label="Leaderboard name"><button type="button" class="cv-lbb" id="lb_name" aria-pressed="true">My name</button><button type="button" class="cv-lbb" id="lb_anon" aria-pressed="false">Anonymous</button></div><p class="cv-tiny">Anonymous hides your name and logo from other partners.</p><div class="cv-ylink" id="anonline"></div>'+
-  '<div class="cv-bl">Your contact details</div>'+
+  '<div class="cv-bl">Other ways to reach you (optional)</div>'+
   '<label class="cv-lbl">Phone<input type="tel" id="f_ph" autocomplete="tel" maxlength="40"></label>'+
   '<label class="cv-lbl">Email<input type="email" id="f_em" autocomplete="email" maxlength="200"></label>'+
   '<label class="cv-lbl">Website<input type="url" id="f_web" placeholder="yourcompany.com" autocomplete="url" maxlength="200"></label>'+
@@ -125,7 +125,7 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
   '<p class="cv-err" id="f_err" role="alert"></p><button type="button" class="cv-btn" id="make" disabled>'+(edit?'Save my page':'Sign up and make my page')+'</button>'+(cust?'<button type="button" class="cv-btn cv-link" id="skip">Skip for now</button>':'');
  m.set(h,cust?'#b_logo':'#f_name');var pop=m.pop,q=function(s){return pop.querySelector(s)};
  var ref=!edit?qs('ref').toLowerCase():'';
- if(ref)api('partner-signup',{op:'invite',deal:DEAL_TAG,ref:ref}).then(function(r){var t=q('#invl');if(!r.ok||!t||m.closed)return;t.innerHTML='&#129309; Invited by <b>'+esc(r.name||'a partner')+'</b>'+(r.company?' from '+esc(r.company):'');t.hidden=false;
+ if(ref)api('partner-signup',{op:'invite',deal:DEAL_TAG,ref:ref}).then(function(r){var t=q('#invl');if(!r.ok||!t||m.closed)return;t.innerHTML='&#129309;&nbsp; Invited by <b>'+esc(r.name||'a partner')+'</b>'+(r.company?' from '+esc(r.company):'');t.hidden=false;
   loadPartner(function(P){if(P&&!q('.cv-invc')&&!m.closed){var d=doc.createElement('p');d.className='cv-invc';d.innerHTML=P.refLine(r,r.cut,r.base);t.parentNode.insertBefore(d,t.nextSibling)}})});
  q('#f_name').value=p0.name||'';q('#f_co').value=p0.company||'';q('#f_ph').value=p0.phone||'';q('#f_em').value=p0.email||'';q('#f_web').value=p0.website||'';
  var mySlug=edit?p0.slug:'',busy=false;
@@ -195,7 +195,7 @@ window.BPC={esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,modal:
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=60820760';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=26427084';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
@@ -241,7 +241,7 @@ function openJoin(){var m=modal('',{label:'Partner sign up'});step1(m)}
 function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, partner &#128075;</h3>':'<h3>Become a Bedrock partner</h3><p class="cv-sub">For real estate and finance pros. Free.</p>'+
  '<div class="cv-vid"><video src="'+ROOT+'p/partner-intro-v7.mp4" poster="'+ROOT+'p/partner-poster-v7.jpg" controls playsinline preload="none"></video></div>'+
  '<ol class="cv-how"><li><b>Get your own page</b> for this deal, with your name and logo.</li><li><b>Send it</b> to people you know.</li><li><b>Get paid</b> when they invest. Your Tracker shows how it is going.</li></ol>')+
- '<p class="cv-q">To start, what do you do?</p>'+
+ '<p class="cv-ask">What do you do?</p>'+
  '<button type="button" class="cv-btn" data-r="re">I\'m in real estate</button><button type="button" class="cv-btn" data-r="fin">I\'m in finance &amp; investments</button>'+
  '<button type="button" class="cv-btn cv-link" id="inv">I just want to see the deal</button>');var pop=m.pop;
  pop.querySelectorAll('button[data-r]').forEach(function(b){b.onclick=function(){step2(m,b.getAttribute('data-r'))}});
@@ -249,7 +249,9 @@ function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, 
 function ready(p,m){loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
 function step2(m,role){openProfile({mode:'new',role:role,m:m,onSave:function(p){afterSave(p);
  openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;afterSave(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})}})}
+(function(){try{if(!doc.querySelector('link[data-cvf]')){var l=doc.createElement('link');l.rel='stylesheet';l.setAttribute('data-cvf','1');l.href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap';doc.head.appendChild(l)}}catch(e){}})();
 function previewStrip(){if(!BP.PREVIEW)return;var s=doc.createElement('div');s.setAttribute('data-cv','1');s.className='cv-prevstrip';s.textContent='PREVIEW · test copy · reservations here are not saved';doc.body.insertBefore(s,doc.body.firstChild)}
+if(BP.join&&qs('go')!=='1'){location.replace(ROOT+'p/signup.html'+location.search);return}
 if(BP.join){partnerCta();track('signup_open',qs('ref').toLowerCase());openJoin()}
 else if(BP.p){render(BP.p);stampMail();partnerCta();
  try{if(window.posthog&&window.posthog.register)window.posthog.register({link_source:'partner',link_code:BP.p.slug,is_test:!!BP.PREVIEW})}catch(e){}
