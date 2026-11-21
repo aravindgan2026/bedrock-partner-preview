@@ -57,7 +57,7 @@ body.cv-hasbar{padding-bottom:84px}body.cv-hasbar .sb{bottom:calc(88px + env(saf
 .cv-pvs{margin-top:10px;border-radius:14px;overflow:hidden;border:1px solid var(--cv-line)}
 .cv-pvh{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;font-weight:700}.cv-pvh img{height:34px;width:auto;max-width:90px;background:#fff;border-radius:8px;padding:2px}.cv-pvh img.cv-rd{width:34px}
 .cv-pvb{padding:12px;display:flex;justify-content:center}.cv-pvbtn{display:inline-block;padding:12px 22px;border-radius:14px;font-weight:700}
-.cv-ylink{font-size:14px;color:var(--cv-soft);margin:6px 2px 0;white-space:pre-line;overflow-wrap:anywhere}
+.cv-ylink{font-size:14px;color:var(--cv-soft);margin:6px 2px 0;white-space:pre-line;overflow-wrap:anywhere;min-height:3.9em}
 .cv-tbul{margin:10px 0 0;padding:10px 14px 10px 30px;background:var(--cv-tint);border-radius:14px;font-size:15px}.cv-tbul li{margin:4px 0}
 .cv-pop a.cv-tl{display:block;margin-top:8px;font-weight:600;min-height:44px;line-height:44px;color:var(--or,#C43B00)}
 .cv-ready{text-align:center;font-size:56px;color:var(--cv-ok);line-height:1}
@@ -132,3 +132,6 @@ body.cv-hasbar .sb{bottom:calc(68px + env(safe-area-inset-bottom))}
 .cv-keybox{margin:14px 0 4px;padding:12px 14px;border-radius:16px;background:#FFF8E6;border:1.5px solid #F2D58A;text-align:left}
 .cv-keybox b{display:block;font-size:16px}.cv-keybox span{display:block;font-size:14px;color:#6F6258;margin:4px 0 8px}
 .cv-prevstrip{position:relative;z-index:5;background:#FFF3C4;color:#6a5200;font:700 12px/1.2 -apple-system,system-ui,sans-serif;text-align:center;padding:4px 8px;pointer-events:none}
+
+.cv-vid{margin:12px 0;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:9/16;max-height:52vh;margin-left:auto;margin-right:auto}.cv-vid video{width:100%;height:100%;display:block;object-fit:contain;background:#000}
+.cv-how{margin:4px 0 10px;padding-left:22px;font-size:15px;line-height:1.4}.cv-how li{margin:6px 0}.cv-q{font-weight:700;margin:14px 0 8px;text-align:center}

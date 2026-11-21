@@ -238,9 +238,13 @@ function partnerCta(){drop('.cv-cta,.cv-chip');
  var ch=doc.createElement('button');ch.type='button';ch.className='cv-chip';ch.setAttribute('data-cv','1');ch.id='chip_join';ch.textContent='Partner sign up';doc.body.appendChild(ch);
  c.querySelector('#cta_join').onclick=openJoin;ch.onclick=openJoin}
 function openJoin(){var m=modal('',{label:'Partner sign up'});step1(m)}
-function step1(m){m.set('<h3>Welcome, partner &#128075;</h3><p class="cv-sub">What do you do?</p>'+
+/* first screen: what this is (video + 3 lines), then one question. Operator 11-20: "wheres the video ... the workflow is confusing" */
+function step1(m){m.set('<h3>Become a Bedrock partner</h3><p class="cv-sub">For real estate and finance pros. Free.</p>'+
+ '<div class="cv-vid"><video src="'+ROOT+'p/partner-intro-v7.mp4" poster="'+ROOT+'p/partner-poster-v7.jpg" controls playsinline preload="none"></video></div>'+
+ '<ol class="cv-how"><li><b>Get your own page</b> for this deal, with your name and logo.</li><li><b>Send it</b> to people you know.</li><li><b>Get paid</b> when they invest. Your Tracker shows how it is going.</li></ol>'+
+ '<p class="cv-q">To start, what do you do?</p>'+
  '<button type="button" class="cv-btn" data-r="re">I\'m in real estate</button><button type="button" class="cv-btn" data-r="fin">I\'m in finance &amp; investments</button>'+
- '<button type="button" class="cv-btn cv-link" id="inv">I\'m here to invest</button>');var pop=m.pop;
+ '<button type="button" class="cv-btn cv-link" id="inv">I just want to see the deal</button>');var pop=m.pop;
  pop.querySelectorAll('button[data-r]').forEach(function(b){b.onclick=function(){step2(m,b.getAttribute('data-r'))}});
  pop.querySelector('#inv').onclick=m.close}
 function ready(p,m){loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
