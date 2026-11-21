@@ -27,6 +27,7 @@ const nop=new Proxy(function(){},{get:(t,k)=>k==='__SV'?1:(k==='then'||typeof k=
 const F0=window.fetch.bind(window);window.fetch=function(u,o){const s=String(u&&u.url||u);if(/\/functions\/v1\/(hold|vault)$/.test(s))return Promise.resolve(new Response('{"ok":true}',{status:200,headers:{'content-type':'application/json'}}));return F0(u,o)};
 
 const n=new DOMParser().parseFromString(html,'text/html');
+if(r.money&&r.money.raise>0){const pc=Math.floor(r.money.committed*100/r.money.raise),fb=n.querySelector('.fund .ft b'),fi=n.querySelector('.fund .fb i');if(fb&&fi&&pc>=0&&pc<=100){fb.textContent=pc+'% committed of $'+r.money.raise.toLocaleString('en-US')+' needed';fi.style.width=pc+'%'}}
 document.head.replaceWith(document.adoptNode(n.head));document.body.replaceWith(document.adoptNode(n.body));document.documentElement.lang='en';
 const rb=document.createElement('meta');rb.name='robots';rb.content='noindex,nofollow,noarchive';document.head.appendChild(rb);
 const l=document.createElement('link');l.rel='stylesheet';l.href=ROOT+'p/cover.css?v='+CFG.V;document.head.appendChild(l);
