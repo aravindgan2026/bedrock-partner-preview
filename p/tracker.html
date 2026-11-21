@@ -113,7 +113,7 @@ function render(){$('wait').hidden=true;$('priv').hidden=true;$('dash').hidden=f
  $('termsw').hidden=me.terms_current!==false;$('termsread').href=C.ROOT+'p/terms.html';
  $('mecard').style.borderTop='6px solid '+(me.brand||'#FF4D00');
  $('seepage').setAttribute('href',C.ROOT+encodeURIComponent(me.slug));
- $('havatar').innerHTML=avatar(me);$('hname').textContent=me.name;$('hco').textContent=me.company;$('hbadge').textContent=C.roleBadge(me.role);
+ $('havatar').innerHTML=avatar(me);$('hname').textContent=me.name;$('hco').textContent=me.company;$('hbadge').textContent=me.verified?C.roleBadge(me.role):C.roleBadge(me.role).replace(/^Verified /,'')+' · we are checking';
  $('ylk').textContent='Your share link: '+C.prettyUrl(me).replace(/^https?:\/\//,'');
  $('feeline').textContent=P.feeLine(rate);$('feenote').textContent=P.feeNote(rate);
  var M=S.money||{own_amount:0,own_shares:0,team_amount:0,team_shares:0},myShares=M.own_shares+M.team_shares;

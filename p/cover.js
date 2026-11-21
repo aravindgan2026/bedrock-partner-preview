@@ -246,11 +246,11 @@ function step1(m){m.set('<h3>Welcome, partner &#128075;</h3><p class="cv-sub">Wh
 function ready(p,m){loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
 function step2(m,role){openProfile({mode:'new',role:role,m:m,onSave:function(p){afterSave(p);
  openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;afterSave(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})}})}
-function previewStrip(){if(!BP.PREVIEW)return;var s=doc.createElement('div');s.setAttribute('data-cv','1');s.className='cv-prevstrip';s.textContent='PREVIEW · test copy · reservations here are not saved';doc.body.appendChild(s)}
-previewStrip();
+function previewStrip(){if(!BP.PREVIEW)return;var s=doc.createElement('div');s.setAttribute('data-cv','1');s.className='cv-prevstrip';s.textContent='PREVIEW · test copy · reservations here are not saved';doc.body.insertBefore(s,doc.body.firstChild)}
 if(BP.join){partnerCta();track('signup_open',qs('ref').toLowerCase());openJoin()}
 else if(BP.p){render(BP.p);stampMail();partnerCta();
  try{if(window.posthog&&window.posthog.register)window.posthog.register({link_source:'partner',link_code:BP.p.slug,is_test:!!BP.PREVIEW})}catch(e){}
  if(keyFor(BP.p.slug))loadPartner(function(P){if(P)P.mount(BP.p)});
  track('page_open');setTimeout(function(){if(!doc.hidden)track('dwell_20s')},20000)}
+previewStrip();
 })();

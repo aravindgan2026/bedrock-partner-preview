@@ -25,7 +25,7 @@ function openSheet(p,url){var e=encodeURIComponent,msg=shareText(p,url);C.track(
  ov.querySelector('#shcopy').onclick=function(){copyText(ta.value,this)};
  var mo=ov.querySelector('#shmore');if(mo)mo.onclick=function(){navigator.share({text:ta.value}).catch(function(){})}}
 function sharePage(p){openSheet(p,C.prettyUrl(p))}
-var STATUS={open:'Waiting',doing:'Being worked on',done:'Done',closed:'Closed'};
+var STATUS={waiting:'Waiting for our team',done:'Done',closed:'Closed'};
 function openFix(p){var m=C.modal('',{label:'Ask us to fix something'}),shot='',busy=false;
  m.set('<h3>Ask us to fix something</h3><p class="cv-sub">Tell us what to change on your page.</p>'+
   '<label class="cv-lbl" for="cr_text">What should we change on your page?</label><textarea class="cv-msg" id="cr_text" rows="4" maxlength="2000" placeholder="Example: make my logo bigger"></textarea>'+

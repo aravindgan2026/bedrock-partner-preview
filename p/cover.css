@@ -131,4 +131,4 @@ body.cv-hasbar .sb{bottom:calc(68px + env(safe-area-inset-bottom))}
 /* real version additions (2026-11-20) */
 .cv-keybox{margin:14px 0 4px;padding:12px 14px;border-radius:16px;background:#FFF8E6;border:1.5px solid #F2D58A;text-align:left}
 .cv-keybox b{display:block;font-size:16px}.cv-keybox span{display:block;font-size:14px;color:#6F6258;margin:4px 0 8px}
-.cv-prevstrip{position:fixed;left:0;right:0;top:0;z-index:2147483000;background:#FFF3C4;color:#6a5200;font:700 12px/1.2 -apple-system,system-ui,sans-serif;text-align:center;padding:4px 8px;pointer-events:none}
+.cv-prevstrip{position:relative;z-index:5;background:#FFF3C4;color:#6a5200;font:700 12px/1.2 -apple-system,system-ui,sans-serif;text-align:center;padding:4px 8px;pointer-events:none}
