@@ -35,6 +35,13 @@ button.btn:disabled{opacity:.5;cursor:default}
 .err{color:var(--err);font-size:15px;font-weight:700}
 .err:empty{display:none}
 .fine{font-size:12px;color:var(--soft)}
+.small{font-size:13px;text-align:center}
+.facts{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.45;color:var(--fg)}
+.facts b{color:var(--accent)}
+.sticky{position:fixed;left:0;right:0;bottom:0;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent);transition:opacity .2s}
+.sticky a{display:block;max-width:440px;margin:0 auto;text-align:center;background:var(--accent);color:#fff;font-weight:800;font-size:18px;text-decoration:none;padding:15px;border-radius:14px}
+.sticky.off{opacity:0;pointer-events:none}
+body{padding-bottom:96px}
 </style>
 </head>
 <body>
@@ -42,7 +49,11 @@ button.btn:disabled{opacity:.5;cursor:default}
   <img class="logo" src="logo.png" alt="Bedrock">
   <p class="eyebrow">For people who applied on Indeed</p>
   <h1>You applied to work with Bedrock. Thank you!</h1>
-  <p>Watch this first (2 minutes): what we do, what the job is, and what to do today.</p>
+  <ul class="facts">
+    <li><b>The job:</b> share one real estate deal with people you know, and with realtors and loan officers.</li>
+    <li><b>First step:</b> get your own page, then send it to your first 3 people today.</li>
+  </ul>
+  <p>Watch this 2-minute video. Short on time? You can skip it: the 3 steps below are enough.</p>
   <div class="player"><video src="welcome-v5.mp4" poster="welcome-v5.jpg" controls playsinline preload="metadata"></video></div>
 
   <form class="card" id="go" novalidate>
@@ -60,11 +71,14 @@ button.btn:disabled{opacity:.5;cursor:default}
     <label class="chk"><input type="checkbox" id="f_terms"><span>I agree to the <a href="/p/terms.html" id="termsLink" target="_blank" rel="noopener">Partner Terms</a></span></label>
     <p class="err" id="f_err" role="alert"></p>
     <button type="submit" class="btn" id="f_go">Get started</button>
+    <p class="small">We use your phone and email only to help you with this job. We don't sell them.</p>
   </form>
 
-  <p>This deal's sign-up ends Monday, November 23.</p>
+  <p>The people you share with must sign up by Monday, Nov 23.</p>
+  <p>This deal is only for accredited investors: people who earn over $200,000 a year ($300,000 with a spouse), or are worth over $1 million, not counting their home. Not sure? Just ask them if they invest.</p>
   <p class="fine">Private offerings for accredited investors only. Not an offer to the public. Partner terms are a draft.</p>
 </main>
+<div class="sticky" id="sticky"><a href="#go">Get started</a></div>
 <script>
 (function(){
   var FN='https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/';
@@ -73,7 +87,7 @@ button.btn:disabled{opacity:.5;cursor:default}
   var TV='', busy=false;
   var WHY={check:'Please type your full name.',contact:'Please check your email and phone number.',terms:'Please tick the box to agree to the Partner Terms.',
     closed:'Sign-ups are closed right now.',slow:'Too many tries. Please wait a few minutes and try again.',reserved:'Please use your own name.',
-    full:'That name is taken. Please add your middle initial.',save:'We could not save that. Please try again.',net:'We could not reach our server. Check your internet and try again.'};
+    full:'Someone already has that page address. Add your middle name or initial.',save:'We could not save that. Please try again.',net:'We could not reach our server. Check your internet and try again.'};
   function $(id){return document.getElementById(id)}
   $('termsLink').href=ROOT+'p/terms.html';
   function post(fn,body){
@@ -84,6 +98,8 @@ button.btn:disabled{opacity:.5;cursor:default}
   }
   /* the current terms version, read the same way the partner pages read it */
   post('partner-public',{op:'brand',slug:'join-sussex'}).then(function(r){if(r&&r.ok&&r.tv)TV=String(r.tv)});
+  /* hide the floating button once the form is on screen */
+  try{new IntersectionObserver(function(es){$('sticky').classList.toggle('off',es[0].isIntersecting)},{threshold:0.15}).observe($('go'))}catch(x){}
   function err(t){$('f_err').textContent=t||''}
   $('go').addEventListener('submit',function(e){
     e.preventDefault(); if(busy)return; err('');
