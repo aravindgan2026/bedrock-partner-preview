@@ -1,6 +1,7 @@
 /* White-label cover for the Sussex investor page (real version, 2026-11-20).
    The 404.html shell has already asked partner-public for this link's brand and decrypted the page; it leaves window.__BP.
-   Loaded for everyone. Holds NO money-share wording: the partner-only tools live in partner.js, loaded only with a private key.
+   Loaded for everyone. Holds NO money-share wording. The public page /<slug> is ALWAYS the visitor view, in every browser:
+   it never loads partner.js and never shows edit tools or numbers. Owner tools live only in the portal, p/tracker.html.
    Saves: partner-signup / partner-me / partner-public functions. The browser keeps only the private key and a visitor id. */
 (function(){
 'use strict';
@@ -19,7 +20,10 @@ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}ca
 function qs(n){try{return new URL(location.href).searchParams.get(n)||''}catch(e){return ''}}
 function keyFor(slug){var k=lsGet('bp_key_'+slug,'');return /^[0-9a-f]{64}$/.test(k)?k:''}
 function prettyUrl(p){return SITE_URL+'/'+p.slug}
-function privateUrl(p){var k=keyFor(p.slug);return prettyUrl(p)+(k?'#t='+k:'')}
+/* the portal login link. It does NOT start with the share link, so the two cannot be mixed up. Never used by a share button. */
+function privateUrl(p){var k=keyFor(p.slug);return k?SITE_URL+'/p/tracker.html#t='+k+'&p='+encodeURIComponent(p.slug):''}
+function keySlugs(){var a=[];try{for(var i=0;i<localStorage.length;i++){var n=localStorage.key(i)||'';if(n.indexOf('bp_key_')===0&&/^[a-z0-9]+(-[a-z0-9]+)*$/.test(n.slice(7))&&keyFor(n.slice(7)))a.push(n.slice(7))}}catch(e){}return a.sort()}
+function signOut(slug){try{localStorage.removeItem('bp_key_'+slug)}catch(e){}var rest=keySlugs();try{if(rest.length)lsSet('bp_me',rest[0]);else localStorage.removeItem('bp_me')}catch(e){}return rest}
 function trackerUrl(p){return ROOT+'p/tracker.html?p='+encodeURIComponent(p.slug)}
 function roleBadge(r){r=String(r||'').toLowerCase();if(r==='re'||r.indexOf('real')===0)return 'Verified Real Estate Professional';if(r==='fin'||r.indexOf('financ')===0)return 'Verified Finance & Investment Professional';return 'Verified Partner'}
 function roleKey(r){r=String(r||'').toLowerCase();if(r==='re'||r.indexOf('real')===0)return 're';if(r==='fin'||r.indexOf('financ')===0)return 'fin';return 'other'}
@@ -37,7 +41,7 @@ function animalAvatar(a,cls){var i=ANIMALS.indexOf(a);return '<div class="cv-av 
 /* ---------- talking to our server ---------- */
 var WHY={slow:'Too many tries. Please wait a few minutes and try again.',closed:'Sign-ups for this deal are closed right now.',reserved:'Please use your own company name.',
  contact:'Please add a phone number or email we can reach you at.',email:'That email does not look right.',terms:'Please tick the box to agree to the Partner Terms.',
- type:'That file is not a picture. Please pick a PNG or JPG.',big:'That picture is too big. Please pick a smaller one.',key:'This page could not check your private link. Open your private link again.',
+ type:'That file is not a picture. Please pick a PNG or JPG.',big:'That picture is too big. Please pick a smaller one.',key:'This device is not signed in to your portal. Open your portal login link again.',
  over:'That is more than your whole share. Pick a smaller number.',net:'We could not reach our server. Check your internet and try again.'};
 function whyText(r){return (r&&WHY[r.why])||'Something went wrong. Please try again.'}
 function api(fn,body){return new Promise(function(res){var done=false,tm=setTimeout(function(){if(!done){done=true;res({ok:false,why:'net'})}},20000);
@@ -126,7 +130,7 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
   '<div class="cv-foot"><p class="cv-err" id="f_err" role="alert"></p><button type="button" class="cv-btn" id="make" disabled>'+(edit?'Save my page':'Make my page')+'</button></div>'+(cust?'<button type="button" class="cv-btn cv-link" id="skip">Skip for now</button>':'');
  m.set(h,cust?'#b_logo':'#f_name');var pop=m.pop,q=function(s){return pop.querySelector(s)};
  var ref=!edit?qs('ref').toLowerCase():'';
- if(ref)api('partner-signup',{op:'invite',deal:DEAL_TAG,ref:ref}).then(function(r){var t=q('#invl');if(!r.ok||!t||m.closed)return;t.innerHTML='&#129309;&nbsp; Invited by <b>'+esc(r.name||'a partner')+'</b>'+(r.company?' from '+esc(r.company):'');t.hidden=false;
+ if(ref&&BP.join)api('partner-signup',{op:'invite',deal:DEAL_TAG,ref:ref}).then(function(r){var t=q('#invl');if(!r.ok||!t||m.closed)return;t.innerHTML='&#129309;&nbsp; Invited by <b>'+esc(r.name||'a partner')+'</b>'+(r.company?' from '+esc(r.company):'');t.hidden=false;
   loadPartner(function(P){if(P&&!q('.cv-invc')&&!m.closed){var d=doc.createElement('p');d.className='cv-invc';d.innerHTML=P.refLine(r,r.cut,r.base);t.parentNode.insertBefore(d,t.nextSibling)}})});
  q('#f_name').value=p0.name||'';q('#f_co').value=p0.company||'';q('#f_ph').value=p0.phone||'';q('#f_em').value=p0.email||'';q('#f_web').value=p0.website||'';
  var mySlug=edit?p0.slug:'',busy=false;
@@ -186,19 +190,20 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
    if(!r.ok||!r.slug){setBusy(false);err(whyText(r));ph('partner_signup_failed',{why:r&&r.why||'none'});return}
    ph('partner_signed_up',{role:o.role,invited:!!qs('ref'),slug:r.slug});
    lsSet('bp_key_'+r.slug,r.key);lsSet('bp_me',r.slug);
-   me('me',r.slug,{}).then(function(x){setBusy(false);var p=x.ok?x.p:{slug:r.slug,name:q('#f_name').value.trim(),company:q('#f_co').value.trim(),role:o.role};p.team=r.team;o.onSave(p,m)})})}
+   /* the key was just made by our server for this sign-up, so this device is signed in. Owner tools live only in the portal. */
+   location.href=ROOT+'p/tracker.html?p='+encodeURIComponent(r.slug)+'&new=1'})}
  q('#make').onclick=function(){if(busy)return;var name=q('#f_name').value.trim(),co=q('#f_co').value.trim();if(!name||!co||(!edit&&!o.role))return;if(!edit&&!q('#accept').checked)return;err('');
   if(edit)saveEdit();else{ph('partner_signup_submit',{role:o.role});saveNew()}};
  if(cust)q('#skip').onclick=function(){ph('partner_customize_skip',{});o.onSkip(m)};
  if(!edit)[].forEach.call(m.pop.querySelectorAll('[data-role]'),function(b){b.onclick=function(){o.role=b.getAttribute('data-role');[].forEach.call(m.pop.querySelectorAll('[data-role]'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});ph('partner_role_pick',{role:o.role});ok()}});
  ok();link();paint()}
 /* ---------- shared handle for partner.js and tracker.html ---------- */
-window.BPC={ph:ph,esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,modal:modal,fitImage:fitImage,openProfile:openProfile,savedScreen:savedScreen,render:render,applySkin:applySkin,
+window.BPC={keySlugs:keySlugs,signOut:signOut,ph:ph,esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,modal:modal,fitImage:fitImage,openProfile:openProfile,savedScreen:savedScreen,render:render,applySkin:applySkin,
  textOn:textOn,prettyUrl:prettyUrl,privateUrl:privateUrl,trackerUrl:trackerUrl,roleBadge:roleBadge,roleKey:roleKey,animalByName:animalByName,animalAvatar:animalAvatar,
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
-/* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=daf45c30';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+/* ---------- partner.js holds the fee wording. Here it is fetched ONLY on the sign-up page, for the one "invited by" fee line. It is never loaded on a partner's public page. ---------- */
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=e1121sep';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
@@ -224,7 +229,8 @@ function gate(a){var pname=CUR&&CUR.name?CUR.name:'',who=pname||'the person who 
   REF=newRef();track('gate_pass',null,{accredited:acc,knows:know,ref:REF});
   stampMail('\n\nAccredited: '+(acc?'yes':'no')+' / Knows '+who+' personally: '+(know?'yes':'no')+' / Ref: '+REF);
   m.close();PASS=true;try{a.click()}finally{PASS=false}}}
-doc.addEventListener('click',function(ev){if(PASS)return;var t=ev.target;if(!t||!t.closest)return;var a=t.closest(MAILSEL);if(!a||!CUR||a.closest('#hold'))return;
+/* on window, so it runs before the page's own click counters: they count the tap once (on the replayed click), not twice */
+window.addEventListener('click',function(ev){if(PASS)return;var t=ev.target;if(!t||!t.closest)return;var a=t.closest(MAILSEL);if(!a||!CUR||a.closest('#hold'))return;
  ev.preventDefault();ev.stopImmediatePropagation();gate(a)},true);
 /* The page's own "Hold my spot" box saves through the hold function. On a partner page we add the partner's link name and the
    reserve ref, so staff can match the reservation to the partner. Any error here falls through to the untouched call. */
@@ -234,7 +240,6 @@ doc.addEventListener('click',function(ev){if(PASS)return;var t=ev.target;if(!t||
    return F.call(window,u,o2).then(function(r){if(isHold&&r&&r.ok)track('reserve_sent',null,{ref:/^pr_/.test(ref)?ref:undefined});return r})}}catch(e){}
   return F.apply(window,arguments)};W.__bp=1;window.fetch=W})();
 /* ---------- decide which mode this page is in ---------- */
-function afterSave(p){drop('.cv-cta,.cv-chip');try{history.replaceState(null,'',ROOT+p.slug)}catch(e){}render(p);stampMail()}
 /* operator 11-20: partner sign-up stays low-key: no top chip, no big card; one small plain link above the footer to the invite page */
 function partnerCta(){drop('.cv-cta,.cv-chip,.cv-plink');
  var c=doc.createElement('p');c.className='cv-plink';c.setAttribute('data-cv','1');
@@ -250,16 +255,16 @@ function step1(m){var fromInvite=qs('go')==='1';m.set((fromInvite?'<h3>Welcome, 
  '<button type="button" class="cv-btn cv-link" id="inv">I just want to see the deal</button>');var pop=m.pop;
  pop.querySelectorAll('button[data-r]').forEach(function(b){b.onclick=function(){ph('partner_role_pick',{role:b.getAttribute('data-r')});step2(m,b.getAttribute('data-r'))}});
  pop.querySelector('#inv').onclick=function(){ph('partner_join_closed',{});m.close()}}
-function ready(p,m){ph('partner_ready_view',{slug:p.slug});loadPartner(function(P){if(P){P.mount(p);P.ready(p,m)}else{m.set('<div class="cv-ready">&#10003;</div><h3>Your page is ready</h3><p class="cv-sub">It is behind this box.</p><button type="button" class="cv-btn" id="see">See my page</button>','#see');m.pop.querySelector('#see').onclick=m.close}})}
 /* operator 11-20 late: "Move it after sign-up": sign-up goes straight to the ready screen; logo and colors are a button there */
-function step2(m,role){openProfile({mode:'new',role:role,m:m,onSave:function(p){afterSave(p);ready(p,m)}})}
+function step2(m,role){openProfile({mode:'new',role:role,m:m})}
 (function(){try{if(!doc.querySelector('link[data-cvf]')){var l=doc.createElement('link');l.rel='stylesheet';l.setAttribute('data-cvf','1');l.href='https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap';doc.head.appendChild(l)}}catch(e){}})();
 function previewStrip(){if(!BP.PREVIEW)return;var s=doc.createElement('div');s.setAttribute('data-cv','1');s.className='cv-prevstrip';s.textContent='PREVIEW · test copy · reservations here are not saved';doc.body.insertBefore(s,doc.body.firstChild)}
 if(BP.join&&qs('go')!=='1'){location.replace(ROOT+'p/signup.html'+location.search);return}
 if(BP.join){try{window.posthog&&window.posthog.register&&window.posthog.register({link_source:'partner_join',is_test:!!BP.PREVIEW})}catch(e){}ph('partner_join_open',{invited:!!qs('ref')});partnerCta();track('signup_open',qs('ref').toLowerCase());openJoin()}
 else if(BP.p){render(BP.p);stampMail();partnerCta();
  try{if(window.posthog&&window.posthog.register)window.posthog.register({link_source:'partner',link_code:BP.p.slug,is_test:!!BP.PREVIEW})}catch(e){}
- if(keyFor(BP.p.slug))loadPartner(function(P){if(P)P.mount(BP.p)});
+ /* remember which partner sent this visitor (first one wins, 30 days), so a later hold on another Bedrock link for this deal still credits them. Not on the partner's own device. */
+ if(!keyFor(BP.p.slug)){var fr=lsGet('bp_from_'+DEAL_TAG,null);if(!fr||!fr.s||!(Date.now()-fr.t<2592e6))lsSet('bp_from_'+DEAL_TAG,{s:BP.p.slug,t:Date.now()})}
  track('page_open');setTimeout(function(){if(!doc.hidden)track('dwell_20s')},20000)}
 previewStrip();
 })();

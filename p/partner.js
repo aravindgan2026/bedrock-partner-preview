@@ -1,4 +1,5 @@
-/* Partner-only tools (real version, 2026-11-20). cover.js loads this file only in a browser that holds the private key for this link.
+/* Partner-only tools. Loaded by the portal (p/tracker.html) after sign-in, and by the sign-up page for one fee line. NEVER loaded on a partner's public page.
+   Every share and copy path here uses only the public link (C.prettyUrl). SAFE() refuses any text that carries a login key.
    Fee wording lives here and in p/tracker.html, nowhere in cover.js or the page. The fee numbers come from our server (partner_deals). */
 (function(){
 'use strict';
@@ -11,20 +12,24 @@ function shareText(p,url){return 'Bedrock has a new real estate investment: own 
 function copyText(u,btn){var done=function(){var o=btn.querySelector('.lbl')||btn;var t=o.textContent;o.textContent='Copied';setTimeout(function(){o.textContent=t},1400)};
  function fb(){var t=doc.createElement('textarea');t.value=u;t.style.position='fixed';t.style.opacity='0';doc.body.appendChild(t);t.select();try{doc.execCommand('copy')}catch(e){}doc.body.removeChild(t);done()}
  try{navigator.clipboard.writeText(u).then(done,fb)}catch(e){fb()}}
-function openSheet(p,url){var e=encodeURIComponent,msg=shareText(p,url);C.track('share_tap',p.slug);C.ph&&C.ph('partner_share_open',{slug:p.slug});
+var KEYRE=/[0-9a-f]{64}|[#?&]t=/i;function SAFE(t){return !KEYRE.test(String(t||''))}
+function openSheet(p){var url=C.prettyUrl(p);if(!SAFE(url))return;var e=encodeURIComponent,msg=shareText(p,url);C.track('share_tap',p.slug);C.ph&&C.ph('partner_share_open',{slug:p.slug});
  var h='<h3>Share my page</h3>'+
-  '<label class="cv-l2" for="shmsg">Your message (you can change it)</label><textarea class="cv-msg" id="shmsg" rows="5"></textarea>'+
+  '<label class="cv-l2" for="shmsg">Your message (you can change it)</label><textarea class="cv-msg" id="shmsg" rows="5"></textarea><p class="cv-err" id="sherr" role="alert"></p>'+
   '<a class="cv-opt" id="shwa" href="#" target="_blank" rel="noopener"><span class="cv-oi">'+ic('chat')+'</span>WhatsApp</a>'+
   '<a class="cv-opt" id="shsms" href="#"><span class="cv-oi">'+ic('message')+'</span>Text message</a>'+
   '<button type="button" class="cv-opt" id="shcopy"><span class="cv-oi">'+ic('copy')+'</span><span class="lbl">Copy message</span></button>'+
   (navigator.share?'<button type="button" class="cv-opt" id="shmore"><span class="cv-oi">'+ic('share')+'</span>More apps</button>':'')+
   '<button type="button" class="cv-btn cv-cancel" id="shx">Cancel</button>';
  var m=C.modal(h,{sheet:1,label:'Share my page'}),ov=m.pop,ta=ov.querySelector('#shmsg');ta.value=msg;
- function sync(){var t=ta.value;ov.querySelector('#shwa').href='https://wa.me/?text='+e(t);ov.querySelector('#shsms').href='sms:?&body='+e(t)}
+ var bad=false;function sync(){var t=ta.value;bad=!SAFE(t);ov.querySelector('#sherr').textContent=bad?'This message has your portal login link in it. Take it out. Never send that link.':'';
+  ov.querySelector('#shwa').href=bad?'#':'https://wa.me/?text='+e(t);ov.querySelector('#shsms').href=bad?'#':'sms:?&body='+e(t)}
+ ov.querySelector('#shwa').onclick=ov.querySelector('#shsms').onclick=function(ev){if(bad)ev.preventDefault()};
  ta.oninput=sync;sync();ov.querySelector('#shx').onclick=m.close;
- ov.querySelector('#shcopy').onclick=function(){copyText(ta.value,this)};
- var mo=ov.querySelector('#shmore');if(mo)mo.onclick=function(){navigator.share({text:ta.value}).catch(function(){})}}
-function sharePage(p){openSheet(p,C.prettyUrl(p))}
+ ov.querySelector('#shcopy').onclick=function(){if(!bad)copyText(ta.value,this)};
+ var mo=ov.querySelector('#shmore');if(mo)mo.onclick=function(){if(!bad)navigator.share({text:ta.value}).catch(function(){})}}
+function sharePage(p){openSheet(p)}
+function copyShareLink(p,btn){var u=C.prettyUrl(p);if(SAFE(u))copyText(u,btn)}
 var STATUS={waiting:'Waiting for our team',done:'Done',closed:'Closed'};
 function openFix(p){var m=C.modal('',{label:'Ask us to fix something'}),shot='',busy=false;
  m.set('<h3>Ask us to fix something</h3><p class="cv-sub">Tell us what to change on your page.</p>'+
@@ -47,31 +52,7 @@ function openFix(p){var m=C.modal('',{label:'Ask us to fix something'}),shot='',
   function add(path){C.me('fix_add',p.slug,{body:t,shot:path||''}).then(function(r){if(!r.ok)return fail(r);busy=false;q('#cr_send').textContent='Send';q('#cr_text').value='';shot='';thumb();can();q('#cr_ok').hidden=false;show(r)})}
   if(shot)C.me('upload',p.slug,{kind:'shot',data:shot}).then(function(r){if(!r.ok)return fail(r);add(r.path)});else add('')};
  thumb();C.me('fix_list',p.slug,{}).then(show)}
-function editMe(p){C.openProfile({mode:'edit',p:p,onSave:function(me,m){C.render(me);mount(me);C.savedScreen(m)}})}
-function drop(sel){[].slice.call(doc.querySelectorAll(sel)).forEach(function(n){n.parentNode.removeChild(n)})}
-/* the partner's own view of the real page: a sticky tools bar and one small line. No fee wording on the page itself. */
-function mount(p){drop('.cv-bar');drop('.cv-pcard');var tu=C.trackerUrl(p);
- var card=doc.createElement('div');card.className='cv-pcard';card.setAttribute('data-cv','1');
- card.innerHTML='<span class="cv-pn-ic" aria-hidden="true">&#128064;</span><span class="cv-pn-t"><b>Your page.</b> This is what people you send it to will see.</span>';
- var anchor=doc.querySelector('.cv-welcome')||doc.querySelector('.nav');if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(card,anchor.nextSibling);
- var bar=doc.createElement('div');bar.className='cv-bar';bar.setAttribute('data-cv','1');
- bar.innerHTML='<a href="'+esc(tu)+'" id="pb_track">'+ic('chart',20)+'Tracker</a><button type="button" class="cv-main" id="pb_share">'+ic('share',20)+'Share</button><button type="button" id="pb_edit" aria-label="Edit my page">'+ic('edit',20)+'Edit page</button><button type="button" id="pb_fix" aria-label="Ask us to fix something">'+ic('chat',20)+'Ask us</button>';
- doc.body.appendChild(bar);doc.body.classList.add('cv-hasbar');
- bar.querySelector('#pb_share').onclick=function(){sharePage(p)};bar.querySelector('#pb_edit').onclick=function(){editMe(p)};bar.querySelector('#pb_fix').onclick=function(){openFix(p)}}
-/* last step of sign-up: the private link is the only way back in, so it is shown and saved here */
-function ready(p,m){mount(p);var base=p.base||6,link=C.privateUrl(p);
- m.set('<div class="cv-rdy"><div class="cv-ready">&#10003;</div><h3>Your page is live</h3><p class="cv-sub">The real deal page, with your name on top.</p></div>'+
- '<div class="cv-lkc"><small>Your page</small><b>'+esc(C.prettyUrl(p).replace(/^https?:\/\//,''))+'</b></div>'+
- '<button type="button" class="cv-btn cv-huge" id="sh3">'+ic('share',22)+'Share my page</button>'+
- '<p class="cv-fee">'+esc(feeLine(base))+'</p>'+
- (p.team?'<p class="cv-sub cv-feet">'+esc(p.team.name||'The partner who invited you')+' brought you on, so they take '+p.team.cut+'% of your '+base+'% fee on each sale. Your Tracker shows it.</p>':'')+
- '<div class="cv-keybox"><b>&#128273; Save your private link</b><span>It opens your Tracker and lets you edit your page. Keep it to yourself.</span>'+
- '<button type="button" class="cv-btn cv-ghost" id="keycopy"><span class="lbl">Copy my private link</span></button></div>'+
- (p.logo?'':'<button type="button" class="cv-btn cv-ghost" id="cust">Add my logo and colors</button>')+'<button type="button" class="cv-btn cv-link" id="see">See my page</button>','#sh3');
- var cb=m.pop.querySelector('#cust');if(cb)cb.onclick=function(){C.ph&&C.ph('partner_customize_open',{});C.openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;C.render(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})};
- m.pop.querySelector('#keycopy').onclick=function(){copyText(link,this)};
- m.pop.querySelector('#sh3').onclick=function(){sharePage(p)};m.pop.querySelector('#see').onclick=m.close}
 function cutOf(v,base){base=base||6;v=parseFloat(v);return isFinite(v)?Math.max(0,Math.min(base,Math.round(v*2)/2)):0}
 function refLine(r,cut,base){base=base||6;return '<b>'+esc(r.name||'Your inviter')+'</b> takes '+cut+'% of your '+base+'% fee on each sale. You keep '+(Math.round((base-cut)*100)/100)+'%.'}
-window.BPP={CUT_DEFAULT:CUT_DEFAULT,cutOf:cutOf,refLine:refLine,EX_IN:EX_IN,feeLine:feeLine,topLine:topLine,feeNote:feeNote,shareText:shareText,sharePage:sharePage,openSheet:openSheet,openFix:openFix,editMe:editMe,mount:mount,ready:ready,copyText:copyText};
+window.BPP={CUT_DEFAULT:CUT_DEFAULT,cutOf:cutOf,refLine:refLine,EX_IN:EX_IN,feeLine:feeLine,topLine:topLine,feeNote:feeNote,shareText:shareText,sharePage:sharePage,copyShareLink:copyShareLink,SAFE:SAFE,openSheet:openSheet,openFix:openFix,copyText:copyText};
 })();

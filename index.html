@@ -2,7 +2,7 @@
 <meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><title>Bedrock</title>
 <style>body{margin:0;background:#FBF7F2;font-family:system-ui,-apple-system,sans-serif;color:#3B2716;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:24px}</style></head>
 <body><p id="m">Opening the deal page&hellip;</p><script>
-(function(){const CFG={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "DEAL": "sussex", "V": "daf45c30"},ROOT=CFG.ROOT,FN=CFG.FN,PREVIEW=CFG.PREVIEW;
+(function(){const CFG={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "DEAL": "sussex", "V": "e1121sep"},ROOT=CFG.ROOT,FN=CFG.FN,PREVIEW=CFG.PREVIEW;
 const msg=document.getElementById('m');
 function nf(t){msg.textContent=t||'We could not find that page. Check the link and try again.'}
 const path=location.pathname;if(path.indexOf(ROOT)!==0&&path+'/'!==ROOT){nf();return}
@@ -10,7 +10,8 @@ let slug='';try{slug=decodeURIComponent(path.slice(ROOT.length)).replace(/\/+$/,
 if((PREVIEW&&(!slug||slug==='index.html'))||slug==='partners'){location.replace(ROOT+'p/signup.html'+location.search);return}
 if(!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)||slug.length>40){nf();return}
 const h=/(?:^#|&)t=([0-9a-f]{64})(?:&|$)/.exec(location.hash);
-if(h){try{localStorage.setItem('bp_key_'+slug,JSON.stringify(h[1]));localStorage.setItem('bp_me',JSON.stringify(slug))}catch(e){}try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+/* A login key in the link is never kept here. This page is always the visitor view. An old private link (/<slug>#t=key) is handed to the portal, which checks it with our server before keeping it. */
+if(h){location.replace(ROOT+'p/tracker.html#t='+h[1]+'&p='+encodeURIComponent(slug));return}
 const d=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4)),c=>c.charCodeAt(0));
 (async()=>{let r=null;
 try{r=await (await fetch(FN+'partner-public',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({op:'brand',slug:slug})})).json()}
@@ -32,6 +33,8 @@ document.head.replaceWith(document.adoptNode(n.head));document.body.replaceWith(
 const rb=document.createElement('meta');rb.name='robots';rb.content='noindex,nofollow,noarchive';document.head.appendChild(rb);
 const l=document.createElement('link');l.rel='stylesheet';l.href=ROOT+'p/cover.css?v='+CFG.V;document.head.appendChild(l);
 for(const o of [...document.querySelectorAll('script')]){const x=document.createElement('script');x.textContent=o.textContent;o.replaceWith(x);}
+/* the page's own script has just labelled this visit "preview / test"; fix the label before any event is sent */
+try{if(window.posthog&&window.posthog.register)window.posthog.register(r.p?{link_source:'partner',link_code:r.p.slug,is_test:!!PREVIEW}:{link_source:'partner_join',link_code:null,is_test:!!PREVIEW})}catch(e){}
 const s=document.createElement('script');s.src=ROOT+'p/cover.js?v='+CFG.V;document.body.appendChild(s);}
 catch(e){nf('This page could not open. Please try again in a minute.')}})();})();
 </script></body></html>
