@@ -120,7 +120,7 @@ function priv(why){$('wait').hidden=true;$('dash').hidden=true;$('priv').hidden=
 if(!slug||!C.keyFor(slug)){priv();return}
 function avatar(p){if(p.photo)return '<img class="d-av rd" src="'+esc(p.photo)+'" alt="">';if(p.logo)return '<img class="d-av" src="'+esc(p.logo)+'" alt="">';return '<div class="d-av" style="background:'+esc(p.brand||'#2A1D12')+';color:'+C.textOn(p.brand||'#2A1D12')+'">'+esc(C.initials(p.name))+'</div>'}
 function upCut(){return S.up?S.up.cut:0}
-function spUsed(){return S.splits.reduce(function(t,x){return t+x.pct},0)}
+function spUsed(){return (S.splits||[]).reduce(function(t,x){return t+x.pct},0)}
 function feeOf(rate){return S.money?Math.round(S.money.own_amount*rate)/100:0}
 function load(){C.me('stats',slug,{}).then(function(r){if(!r.ok){priv(r.why==='key'?'This browser does not have the private link for this page. Open your private link again.':C.whyText(r));return}S=r;me=r.p;render()})}
 function render(){$('wait').hidden=true;$('priv').hidden=true;$('dash').hidden=false;
@@ -130,10 +130,10 @@ function render(){$('wait').hidden=true;$('priv').hidden=true;$('dash').hidden=f
  $('seepage').setAttribute('href',C.ROOT+encodeURIComponent(me.slug));
  $('havatar').innerHTML=avatar(me);$('hname').textContent=me.name;$('hco').textContent=me.company;$('hbadge').textContent=me.verified?C.roleBadge(me.role):'Checking your license';$('hbadge').parentNode.classList.toggle('checking',!me.verified);
  $('ylk').textContent='Your share link: '+C.prettyUrl(me).replace(/^https?:\/\//,'');
- $('feeline').textContent=P.feeLine(rate);$('feenote').textContent=P.feeNote(rate);
+ $('feeline').textContent=P.feeLine(rate);var kp=Math.round((rate-upCut())*100)/100;$('feenote').textContent=S.up?((S.up.name||'Your inviter')+' brought you on, so they take '+upCut()+'% of your '+rate+'%. You keep '+kp+'%. Example: your people put in $'+P.EX_IN.toLocaleString('en-US')+', you earn $'+(P.EX_IN*kp/100).toLocaleString('en-US')+'. It counts once their money is in.'):P.feeNote(rate);
  var M=S.money||{own_amount:0,own_shares:0,team_amount:0,team_shares:0},myShares=M.own_shares+M.team_shares;
  $('n_open').textContent=S.opens.toLocaleString('en-US');$('n_res').textContent=S.reserved.toLocaleString('en-US');
- $('n_sh').textContent=myShares.toLocaleString('en-US');$('n_fee').textContent=usd(feeOf(rate));
+ $('n_sh').textContent=myShares.toLocaleString('en-US');$('n_fee').textContent=usd(feeOf(Math.max(0,rate-upCut()-spUsed())));
  $('cnts').innerHTML=[['Times your page was opened',S.page_opens],['Times you tapped Share',S.shares_tapped],['Taps on the reserve button',S.reserve_taps]]
   .map(function(x){return '<div class="d-cnt"><span>'+esc(x[0])+'</span><b>'+Number(x[1]).toLocaleString('en-US')+'</b></div>'}).join('');
  var isTop=S.linked&&S.rank===1,board=S.board||[],others=board.filter(function(x){return !x.me}),lead=others.length?others[0].shares:0;
