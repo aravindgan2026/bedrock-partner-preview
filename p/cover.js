@@ -25,8 +25,8 @@ function privateUrl(p){var k=keyFor(p.slug);return k?SITE_URL+'/p/tracker.html#t
 function keySlugs(){var a=[];try{for(var i=0;i<localStorage.length;i++){var n=localStorage.key(i)||'';if(n.indexOf('bp_key_')===0&&/^[a-z0-9]+(-[a-z0-9]+)*$/.test(n.slice(7))&&keyFor(n.slice(7)))a.push(n.slice(7))}}catch(e){}return a.sort()}
 function signOut(slug){try{localStorage.removeItem('bp_key_'+slug)}catch(e){}var rest=keySlugs();try{if(rest.length)lsSet('bp_me',rest[0]);else localStorage.removeItem('bp_me')}catch(e){}return rest}
 function trackerUrl(p){return ROOT+'p/tracker.html?p='+encodeURIComponent(p.slug)}
-function roleBadge(r){r=String(r||'').toLowerCase();if(r==='re'||r.indexOf('real')===0)return 'Verified Real Estate Professional';if(r==='fin'||r.indexOf('financ')===0)return 'Verified Finance & Investment Professional';return 'Verified Partner'}
-function roleKey(r){r=String(r||'').toLowerCase();if(r==='re'||r.indexOf('real')===0)return 're';if(r==='fin'||r.indexOf('financ')===0)return 'fin';return 'other'}
+function roleBadge(r){r=String(r||'').toLowerCase();if(r==='job')return '';/* Indeed sign-ups: no profession badge (operator 11-21) */if(r==='re'||r.indexOf('real')===0)return 'Verified Real Estate Professional';if(r==='fin'||r.indexOf('financ')===0)return 'Verified Finance & Investment Professional';return 'Verified Partner'}
+function roleKey(r){r=String(r||'').toLowerCase();if(r==='job')return 'job';if(r==='re'||r.indexOf('real')===0)return 're';if(r==='fin'||r.indexOf('financ')===0)return 'fin';return 'other'}
 function lum(h){var m=/^#?([0-9a-f]{6})$/i.exec(h||'');if(!m)return 1;var n=parseInt(m[1],16);var c=[n>>16,(n>>8)&255,n&255].map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
 function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
 function textOn(h){if(!/^#?[0-9a-f]{6}$/i.test(h||''))return '#ffffff';return ratio(h,'#ffffff')>=4.5?'#ffffff':'#1D1712'}
@@ -87,7 +87,7 @@ function applySkin(p){var r=doc.documentElement.style,b=safeMain(p.brand||'#FF4D
 function drop(sel){[].slice.call(doc.querySelectorAll(sel)).forEach(function(n){n.parentNode.removeChild(n)})}
 function banner(p){drop('.cv-banner');var b=p.brand||'#FF4D00',t=textOn(b),d=doc.createElement('div');d.className='cv-banner';d.setAttribute('data-cv','1');d.style.background=b;d.style.color=t;
  d.innerHTML=(p.logo?'<img class="cv-lg" src="'+esc(p.logo)+'" alt="">':(p.photo?'':'<div class="cv-av" style="color:'+t+'">'+esc(initials(p.company||p.name))+'</div>'))+(p.photo?'<img class="cv-ph" src="'+esc(p.photo)+'" alt="">':'')+
-  '<div class="cv-t"><b>'+esc(p.company||p.name)+'</b><span>Shared by '+esc(p.name)+'</span></div>';
+  '<div class="cv-t"><b>'+esc(p.company||p.name)+'</b><span>'+(p.company?'Shared by '+esc(p.name):'Bedrock partner')+'</span></div>';
  doc.body.insertBefore(d,doc.body.firstChild);doc.body.classList.add('cv-has')}
 function welcome(p){drop('.cv-welcome');var w=doc.createElement('div');w.className='cv-welcome cv-wx';w.setAttribute('data-cv','1');
  var known=!!(p&&p.name),first=known?String(p.name).trim().split(/\s+/)[0]:'';
@@ -96,18 +96,19 @@ function welcome(p){drop('.cv-welcome');var w=doc.createElement('div');w.classNa
   '<div class="cv-wx-av">'+av+'<span class="cv-wx-wave" aria-hidden="true">&#128075;</span></div>'+
   '<div class="cv-wx-t"><span class="cv-wx-k">Private deal &middot; just for you</span>'+
   '<b class="cv-wx-h">'+(known?esc(first)+' picked this for you!':'A friend picked this for you!')+'</b>'+
-  '<span class="cv-wx-s">'+(known?'Welcome! '+esc(p.name)+' from '+esc(p.company)+' shared this with you.':'Welcome! A friend shared this with you.')+'</span></div>';
+  '<span class="cv-wx-s">'+(known?'Welcome! '+esc(p.name)+(p.company?' from '+esc(p.company):'')+' shared this with you.':'Welcome! A friend shared this with you.')+'</span></div>';
  var nav=doc.querySelector('.nav');if(nav&&nav.parentNode)nav.parentNode.insertBefore(w,nav.nextSibling);else doc.body.insertBefore(w,doc.body.firstChild.nextSibling)}
 function render(p){CUR=p;applySkin(p);banner(p);welcome(p)}
 /* ---------- partner sign-up form (also "Customize" and "Edit my page") ---------- */
 function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0=o.p||{},m=o.m||modal('',{label:cust?'Customize your page':edit?'Edit my page':'Sign up'});
+ var job=String(p0.role||o.role||'')==='job';/* Indeed: company optional */
  var st={anon:!!p0.anon,logo:p0.logo||'',photo:p0.photo||'',a:p0.brand||SCHEMES[0].a,b:p0.brand2||SCHEMES[0].b,scheme:p0.scheme||'',touched:!!p0.brand,lock:!!p0.logo,newLogo:false,newPhoto:false};
  if(!st.scheme){st.scheme='custom';SCHEMES.forEach(function(s){if(s.a.toLowerCase()===String(st.a).toLowerCase()&&s.b.toLowerCase()===String(st.b).toLowerCase())st.scheme=s.id});if(!edit&&!p0.brand)st.scheme=SCHEMES[0].id}
  var h=(cust?'<h3>Add your logo and colors</h3><p class="cv-sub">Add your logo, photo and colors. You can skip this and do it any time.</p>':edit?'<h3>Edit my page</h3><p class="cv-sub">Change anything you like, then save.</p>':'<p class="cv-inv" id="invl" hidden></p><h3>Make your partner page</h3><p class="cv-sub cv-s1">Free. Takes about a minute.</p>')+
   '<div id="basic"'+(cust?' hidden':'')+'>'+
   (edit?'':'<div class="cv-lbl">I work in</div><div class="cv-schg" role="group" aria-label="I work in" style="margin-bottom:14px"><button type="button" class="cv-lbb" data-role="re" aria-pressed="'+(o.role==='re')+'">Real estate</button><button type="button" class="cv-lbb" data-role="fin" aria-pressed="'+(o.role==='fin')+'">Finance</button></div>')+
   '<label class="cv-lbl">Your name<input type="text" id="f_name" autocomplete="name" maxlength="120"></label>'+
-  '<label class="cv-lbl">Company<input type="text" id="f_co" autocomplete="organization" maxlength="120"></label>'+
+  '<label class="cv-lbl">'+(job?'Company (optional)':'Company')+'<input type="text" id="f_co" autocomplete="organization" maxlength="120"></label>'+
   (edit?'':'<label class="cv-lbl">Phone or email<input type="text" id="f_ct" autocomplete="on" maxlength="200" placeholder="So we can reach you and pay you"></label>')+
   '<div class="cv-ylink" id="ylink"></div>'+
   '<input type="text" id="f_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">'+
@@ -135,13 +136,13 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
  q('#f_name').value=p0.name||'';q('#f_co').value=p0.company||'';q('#f_ph').value=p0.phone||'';q('#f_em').value=p0.email||'';q('#f_web').value=p0.website||'';
  var mySlug=edit?p0.slug:'',busy=false;
  function err(t){q('#f_err').textContent=t||''}
- function ok(){var a=q('#accept');q('#make').disabled=busy||!((edit||o.role)&&q('#f_name').value.trim()&&q('#f_co').value.trim()&&(edit||(a.checked&&q('#f_ct').value.trim().length>=3)))}
+ function ok(){var a=q('#accept');q('#make').disabled=busy||!((edit||o.role)&&q('#f_name').value.trim()&&(job||q('#f_co').value.trim())&&(edit||(a.checked&&q('#f_ct').value.trim().length>=3)))}
  var lt=0,lastCo=null;
  function link(){if(edit){q('#ylink').textContent='Your link:\n'+(SITE_URL+'/'+mySlug).replace(/^https?:\/\//,'');return}
   var co=q('#f_co').value.trim();if(co===lastCo)return;lastCo=co;clearTimeout(lt);if(!co){q('#ylink').textContent='';return}
   lt=setTimeout(function(){api('partner-signup',{op:'slug',deal:DEAL_TAG,company:co}).then(function(r){if(m.closed||q('#f_co').value.trim()!==co)return;
    q('#ylink').textContent=r.ok&&r.slug?'Your link:\n'+(SITE_URL+'/'+r.slug).replace(/^https?:\/\//,''):(r.reserved?WHY.reserved:'')})},400)}
- function pvStrip(){var t=textOn(st.a),co=q('#f_co').value.trim()||'Your company';
+ function pvStrip(){var t=textOn(st.a),co=q('#f_co').value.trim()||(job?q('#f_name').value.trim():'')||'Your company';
   q('#pvs').innerHTML='<div class="cv-pvh" style="background:'+st.a+';color:'+t+'">'+(st.logo?'<img src="'+esc(st.logo)+'" alt="">':'')+(st.photo?'<img class="cv-rd" src="'+esc(st.photo)+'" alt="">':'')+'<b>'+esc(co)+'</b></div><div class="cv-pvb" style="background:'+st.b+'"><span class="cv-pvbtn" style="background:'+st.a+';color:'+t+'">Your button</span></div>'}
  function paint(){q('#lpw').innerHTML=st.logo?'<img id="lpv" src="'+esc(st.logo)+'" alt="Your logo">':'<div id="lpv" class="cv-ph">Logo</div>';
   q('#b_logo').textContent=st.logo?'Change logo':'Upload your logo';q('#b_logo_rm').hidden=!st.logo;
@@ -192,7 +193,7 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
    lsSet('bp_key_'+r.slug,r.key);lsSet('bp_me',r.slug);
    /* the key was just made by our server for this sign-up, so this device is signed in. Owner tools live only in the portal. */
    location.href=ROOT+'p/tracker.html?p='+encodeURIComponent(r.slug)+'&new=1'})}
- q('#make').onclick=function(){if(busy)return;var name=q('#f_name').value.trim(),co=q('#f_co').value.trim();if(!name||!co||(!edit&&!o.role))return;if(!edit&&!q('#accept').checked)return;err('');
+ q('#make').onclick=function(){if(busy)return;var name=q('#f_name').value.trim(),co=q('#f_co').value.trim();if(!name||(!co&&!job)||(!edit&&!o.role))return;if(!edit&&!q('#accept').checked)return;err('');
   if(edit)saveEdit();else{ph('partner_signup_submit',{role:o.role});saveNew()}};
  if(cust)q('#skip').onclick=function(){ph('partner_customize_skip',{});o.onSkip(m)};
  if(!edit)[].forEach.call(m.pop.querySelectorAll('[data-role]'),function(b){b.onclick=function(){o.role=b.getAttribute('data-role');[].forEach.call(m.pop.querySelectorAll('[data-role]'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});ph('partner_role_pick',{role:o.role});ok()}});
@@ -203,7 +204,7 @@ window.BPC={keySlugs:keySlugs,signOut:signOut,ph:ph,esc:esc,ic:ic,initials:initi
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner.js holds the partner-only wording. Here it is fetched ONLY on the sign-up page, for the one "invited by" line. It is never loaded on a partner's public page. ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=9022639f';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=441cd2ab';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}

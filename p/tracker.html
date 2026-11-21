@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/bedrock-partner-preview/p/cover.css?v=9022639f"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"><title>Partner portal - Sussex</title><style>*{box-sizing:border-box}html,body{overflow-x:hidden}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/bedrock-partner-preview/p/cover.css?v=441cd2ab"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"><title>Partner portal - Sussex</title><style>*{box-sizing:border-box}html,body{overflow-x:hidden}
 body{margin:0;background:#FBF7F2;color:#1D1712;font:17px/1.5 -apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#C43B00}.d-top{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 16px;background:#fff;border-bottom:1px solid #ECE3D9}.d-top img{height:26px}.d-top span{margin-left:auto;font-size:14px;color:#6F6258}
 .d-wrap{max-width:720px;margin:0 auto;padding:16px 16px 40px}.d-card{background:#fff;border-radius:22px;padding:20px 18px;margin-top:14px;box-shadow:0 1px 2px rgba(80,40,10,.05);border:1px solid #ECE3D9}
@@ -125,6 +125,8 @@ body{font-size:16px;line-height:1.5;background:#F7F3EE}
 @media(prefers-reduced-motion:reduce){.d-fold summary i{transition:none}}
 
 .d-steps{margin:12px 0 4px;padding-left:22px;font-size:15px;line-height:1.5;color:#2B2119}.d-steps li{margin:0 0 10px}.d-lnk{display:inline;border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--or,#FF4D00);text-decoration:underline;cursor:pointer}.d-go .d-note{margin:8px 0 0}.d-go .d-btn{margin-top:14px}
+
+.d-badge[hidden],#hco[hidden],.d-steps li[hidden]{display:none}
 </style><script>window.__BPH=location.hash||'';if(window.__BPH){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){location.hash=''}}window.addEventListener('hashchange',function(){if(/[#&]t=/.test(location.hash))location.reload()});</script><script>(function(){!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister identify alias set_config reset opt_out_capturing opt_in_capturing get_distinct_id get_property startSessionRecording stopSessionRecording".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 const P=window.__P||{},code=new URLSearchParams(location.search).get('i')||'',src=/\/go\/?$/.test(location.pathname)?'open-link':(code?'personal-link':'preview');
 posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only',capture_pageview:true,capture_pageleave:true,autocapture:false,disable_session_recording:true,persistence:'localStorage'});posthog.register({deal:'sussex',flow:'partner',page:'portal',link_source:'partner_portal',is_test:true});})();</script></head><body>
@@ -149,6 +151,7 @@ posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https
 <section class="d-card d-go" id="goc"><h2>How to get this out</h2><p class="d-sub">Three easy steps. We are here to help the whole way.</p>
 <ol class="d-steps"><li><b>Make it yours.</b> Add your logo and photo so people know it comes from you. <button class="d-lnk" id="go_edit" type="button">Edit my page</button></li>
 <li><b>Send it one person at a time</b> to people you know. Tap &ldquo;Share my page&rdquo;: a message is ready, and you can change it to sound like you. No public posts or mass messages.</li>
+<li id="go_pros" hidden><b>Reach out to realtors and loan officers you know.</b> They can share deals like this one too. Send them your invite link so they can make their own page. <button class="d-lnk" id="go_team" type="button">Get my invite link</button></li>
 <li><b>Watch it here.</b> When someone opens your page or holds a spot, it shows up below.</li></ol>
 <p class="d-note">&#128172; <b>People have questions about the investment?</b> Our team answers them, so you never have to. They can tap &ldquo;Hold my spot&rdquo; on your page and we follow up with each one.</p>
 <p class="d-note">&#9200; Your page tells people to sign up by <b>Monday, Nov 23</b>.</p>
@@ -188,7 +191,7 @@ posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https
 <section class="d-card"><h2><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg> Top performers in your industry</h2><p class="d-sub" id="bsub"></p><div class="d-nine" id="nine"></div><div id="race"></div></section>
 </main>
 
-<script>window.BP_LIB=1;window.__BP={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "deal": "sussex"};</script><script src="/bedrock-partner-preview/p/cover.js?v=9022639f"></script><script src="/bedrock-partner-preview/p/partner.js?v=9022639f"></script><script>(function(){var C=window.BPC,P=window.BPP,$=function(i){return document.getElementById(i)},esc=C.esc;
+<script>window.BP_LIB=1;window.__BP={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "deal": "sussex"};</script><script src="/bedrock-partner-preview/p/cover.js?v=441cd2ab"></script><script src="/bedrock-partner-preview/p/partner.js?v=441cd2ab"></script><script>(function(){var C=window.BPC,P=window.BPP,$=function(i){return document.getElementById(i)},esc=C.esc;
 /* Partner portal: the ONLY place with owner tools. Nothing shows until our server has checked the login key (partner-me).
    Every number comes from partner-me "stats". Money numbers come only from rows our team enters from real papers. */
 var S=null,me=null,cutTimer=0,SELF=location.pathname,SLUGRE=/^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -224,7 +227,7 @@ function render(){$('wait').hidden=true;$('priv').hidden=true;$('dash').hidden=f
  $('termsw').hidden=me.terms_current!==false;$('termsread').href=C.ROOT+'p/terms.html';
  $('mecard').style.borderTop='6px solid '+(me.brand||'#FF4D00');
  $('seepage').setAttribute('href',C.ROOT+encodeURIComponent(me.slug));
- $('havatar').innerHTML=avatar(me);$('hname').textContent=me.name;$('hco').textContent=me.company;$('hbadge').textContent=me.verified?C.roleBadge(me.role):'New partner';$('hbadge').parentNode.classList.toggle('checking',!me.verified);
+ $('havatar').innerHTML=avatar(me);$('hname').textContent=me.name;$('hco').textContent=me.company;$('hbadge').textContent=me.verified?C.roleBadge(me.role):'New partner';$('hbadge').parentNode.classList.toggle('checking',!me.verified);$('hbadge').parentNode.hidden=!$('hbadge').textContent;$('hco').hidden=!me.company;$('go_pros').hidden=rk!=='job';
  $('ylk').textContent='Your share link: '+C.prettyUrl(me).replace(/^https?:\/\//,'');
  $('feeline').textContent=P.feeLine(rate);var kp=Math.round((rate-upCut())*100)/100;$('feenote').textContent=S.up?((S.up.name||'Your inviter')+' brought you on, so they take '+upCut()+'% of your '+rate+'%. You keep '+kp+'%. Example: your people put in $'+P.EX_IN.toLocaleString('en-US')+', you earn $'+(P.EX_IN*kp/100).toLocaleString('en-US')+'. It counts once their money is in.'):P.feeNote(rate);
  var M=S.money||{own_amount:0,own_shares:0,team_amount:0,team_shares:0},myShares=M.own_shares+M.team_shares;
@@ -240,7 +243,7 @@ function render(){$('wait').hidden=true;$('priv').hidden=true;$('dash').hidden=f
  var pct=isTop?100:(S.linked?Math.max(4,Math.min(100,Math.round(myShares/Math.max(1,lead+1)*100))):0);$('ulbar').style.width=pct+'%';$('ulpb').setAttribute('aria-valuenow',pct);
  $('ulme').textContent='You + team: '+myShares.toLocaleString('en-US')+' shares sold';$('ultop').textContent=isTop?'#1':(lead?'#1: '+lead.toLocaleString('en-US'):'');
  $('nine').innerHTML=isTop?'You are #1: your fee is '+top+'% on this deal.':'Be #1 and your fee goes to '+top+'%.';
- $('bsub').textContent=(rk==='re'?'Real estate partners':rk==='fin'?'Finance & investment partners':'All partners')+', ranked by shares sold (yours plus your team’s).';
+ $('bsub').textContent=(rk==='re'?'Real estate partners':rk==='fin'?'Finance & investment partners':rk==='job'?'Partners who joined from our job post':'All partners')+', ranked by shares sold (yours plus your team’s).';
  $('race').innerHTML=board.length?board.map(function(x,i){var an=x.anon?C.animalByName(x.animal):null,nm=an?(x.animal):x.name,av=an?C.animalAvatar(an,'sm'):'<div class="d-av sm" style="background:#F5EDE4;color:#6F6258">'+esc(C.initials(x.name))+'</div>';
   return '<div class="d-rb'+(x.me?' mine':'')+'"><div style="font-weight:700;text-align:center">'+(i+1)+'</div>'+av+'<div class="nm">'+esc(nm)+(x.me?'<span class="you">(you)</span>':'')+'</div><div class="mn">'+Number(x.shares).toLocaleString('en-US')+'<small>shares sold</small></div></div>'}).join(''):'<p class="d-note">Nobody has sold shares yet. The board fills in once the first money is in.</p>';
  spMax();spList();teamShow()}
@@ -273,7 +276,7 @@ $('sp_save').onclick=function(){var nm=$('sp_name').value.trim(),ct=$('sp_ct').v
 $('shareme').onclick=function(){P.sharePage(me)};
 $('editme').onclick=function(){C.openProfile({mode:'edit',p:me,onSave:function(s,m){me=s;S.p=s;render();C.savedScreen(m)}})};
 $('fixme').onclick=function(){P.openFix(me)};
-$('go_edit').onclick=function(){$('editme').click()};$('go_ask').onclick=function(){P.openFix(me)};
+$('go_edit').onclick=function(){$('editme').click()};$('go_team').onclick=function(){var t=$('teamc');t.open=true;t.scrollIntoView({behavior:'smooth',block:'start'})};$('go_ask').onclick=function(){P.openFix(me)};
 $('copyshare').onclick=function(){P.copyShareLink(me,this)};
 $('keyme').onclick=$('newkey').onclick=function(){var u=C.privateUrl(me);if(u)P.copyText(u,this)};
 $('signout').onclick=function(){if(!confirm('Sign out on this device? You will need your portal login link to get back in.'))return;C.signOut(slug);C.ph('partner_portal_signout',{});location.replace(SELF)};
