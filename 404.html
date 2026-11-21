@@ -25,9 +25,9 @@ const key=await crypto.subtle.importKey('raw',d(r.k),'AES-GCM',false,['decrypt']
 const html=new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:d(B.iv)},key,d(B.ct)));
 window.__BP={ROOT:ROOT,FN:FN,PREVIEW:PREVIEW,deal:r.deal,tv:r.tv,join:!!r.join,p:r.p||null};
 
-/* PREVIEW ONLY: no PostHog, and the page's own "Hold my spot" and papers boxes answer here instead of saving. */
+/* PREVIEW ONLY: no PostHog, and the page's own "Hold my spot", papers and thumbs-vote saves answer here instead of saving (the vote count still loads). */
 const nop=new Proxy(function(){},{get:(t,k)=>k==='__SV'?1:(k==='then'||typeof k==='symbol'?undefined:nop),apply:()=>undefined});window.posthog=nop;
-const F0=window.fetch.bind(window);window.fetch=function(u,o){const s=String(u&&u.url||u);if(/\/functions\/v1\/(hold|vault)$/.test(s))return Promise.resolve(new Response('{"ok":true}',{status:200,headers:{'content-type':'application/json'}}));return F0(u,o)};
+const F0=window.fetch.bind(window);window.fetch=function(u,o){const s=String(u&&u.url||u);if(/\/functions\/v1\/(hold|vault|vote)$/.test(s))return Promise.resolve(new Response('{"ok":true}',{status:200,headers:{'content-type':'application/json'}}));return F0(u,o)};
 
 const n=new DOMParser().parseFromString(html,'text/html');
 if(r.money&&r.money.raise>0){const pc=Math.floor(r.money.committed*100/r.money.raise),fb=n.querySelector('.fund .ft b'),fi=n.querySelector('.fund .fb i');if(fb&&fi&&pc>=0&&pc<=100){fb.textContent=pc+'% committed of $'+r.money.raise.toLocaleString('en-US')+' needed';fi.style.width=pc+'%'}}
