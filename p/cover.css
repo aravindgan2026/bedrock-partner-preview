@@ -186,3 +186,7 @@ body.cv-hasbar .sb{bottom:calc(68px + env(safe-area-inset-bottom))}
 .cv-pop .cv-btn.cv-ghost{border-radius:14px}
 @media(prefers-reduced-motion:reduce){.cv-rdy .cv-ready{animation:none}}
 .cv-pop:has(.cv-s1){padding-top:0}.cv-pop:has(.cv-s1) .cv-in{padding-top:22px}.cv-pop h3:has(+ .cv-s1){padding-right:56px}
+/* 11-20 operator "theres overlap thats ugly": welcome card sat on the photo edge; wave covered the circle; a sparkle sat on the text */
+.cv-welcome.cv-wx{margin-bottom:16px;box-shadow:0 6px 16px -6px rgba(var(--orrgb,255,77,0),.45)}
+.cv-wx-av{margin-right:4px}.cv-wx-wave{right:-12px;bottom:-6px;font-size:19px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
+.cv-sp.s3{display:none}.cv-sp.s1{top:8px;right:10px}.cv-sp.s2{display:none}
