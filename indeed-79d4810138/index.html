@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Welcome to Bedrock</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap">
+<style>
+:root{--bg:#FBF6EF;--fg:#1A120C;--soft:#6B5D52;--accent:#FF4D00;--line:#ECE3D9;--display:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
+@media (prefers-color-scheme: dark){:root{--bg:#17110C;--fg:#F6EEE6;--soft:#B9AA9C;--accent:#FF6A26;--line:#3A2E25;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);padding:28px max(16px,env(safe-area-inset-left,0px)) 40px}
+main{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.logo{height:28px;width:auto;align-self:flex-start}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0}
+h1{font-size:26px;line-height:1.15;letter-spacing:-.02em;margin:0}
+.player{background:#000;border-radius:24px;overflow:hidden;border:1px solid var(--line);aspect-ratio:9/16}
+video{display:block;width:100%;height:100%;object-fit:contain;background:#000}
+p{margin:0;font-size:16px;line-height:1.5;color:var(--soft)}
+.btn{display:block;text-align:center;background:var(--accent);color:#fff;font-weight:800;font-size:17px;text-decoration:none;padding:16px;border-radius:14px}
+.fine{font-size:12px;color:var(--soft)}
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="logo.png" alt="Bedrock">
+  <p class="eyebrow">For people who applied on Indeed</p>
+  <h1>You applied to work with Bedrock. Thank you!</h1>
+  <p>Watch this first (2 minutes): what we do, what the job is, and what to do today.</p>
+  <div class="player"><video src="welcome.mp4" poster="welcome.jpg" controls playsinline preload="metadata"></video></div>
+  <a class="btn" href="/partners">Join at deals.mybedrock.app/partners</a>
+  <p>This deal's sign-up ends Monday, November 23.</p>
+  <p class="fine">Private offerings for accredited investors only. Not an offer to the public. Partner terms are a draft.</p>
+</main>
+</body>
+</html>
