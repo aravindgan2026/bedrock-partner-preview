@@ -51,6 +51,14 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--o),var(--o2));-we
 #lf_msg{margin:8px 0 0;font-weight:600;color:var(--ink)}
 .cta2{margin-top:18px}
 @media (prefers-reduced-motion:reduce){.qa summary i{transition:none}}
+
+/* design pass 2, 11-20: shadow-only cards, line icons, calmer type */
+.pts li{border:0;box-shadow:0 1px 2px rgba(60,30,10,.05),0 6px 18px -8px rgba(60,30,10,.14)}
+.pts .ic{background:#FFF0E6;color:#E84300;width:30px;height:30px}
+.pts b{font-size:14px;font-weight:700}.pts small{font-size:12.5px;color:#7A6D62}
+.lede{font-size:15.5px;max-width:34ch}
+h1{font-weight:800;letter-spacing:-.04em}
+.cta{border-radius:16px;min-height:58px;font-size:17px}
 </style><script>(function(){!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister identify alias set_config reset opt_out_capturing opt_in_capturing get_distinct_id get_property startSessionRecording stopSessionRecording".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 const P=window.__P||{},code=new URLSearchParams(location.search).get('i')||'',src=/\/go\/?$/.test(location.pathname)?'open-link':(code?'personal-link':'preview');
 posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only',capture_pageview:true,capture_pageleave:true,autocapture:true,session_recording:{maskAllInputs:true},persistence:'localStorage'});posthog.register({deal:'sussex',flow:'partner',page:'invite',is_test:true});})();</script></head><body>
@@ -58,15 +66,15 @@ posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https
  <div class="top"><img src="https://deals.mybedrock.app/logo.png" alt="Bedrock"><span class="tag">Partner network</span></div>
  <p class="inv" id="sg_inv" hidden></p>
  <h1>Join the Bedrock <em>partner network</em></h1>
- <p class="lede">Give your clients private real estate deals they can&rsquo;t find anywhere else. Share them under your name, and earn a fee when they invest.</p>
+ <p class="lede">Share private real estate deals with your clients, under your name. Earn a fee when they invest.</p>
  <div class="live"><span class="dot"></span><span><b>Live now</b> · Orlando house flip · until Nov 23</span></div>
  <div class="mid">
   <div class="vid"><video id="sg_v" src="/bedrock-partner-preview/p/partner-intro-v7.mp4" poster="/bedrock-partner-preview/p/partner-poster-v7.jpg" playsinline preload="none"></video>
    <button class="play" id="sg_play" type="button" aria-label="Play the 36-second video"><span></span><small>Watch · 36 sec</small></button></div>
   <ul class="pts">
-   <li><span class="ic">&#127968;</span><b>High-value deals</b><small>Real estate offerings, ready to share.</small></li>
-   <li><span class="ic">&#9889;</span><b>Get paid fast</b><small>Your fee is paid as soon as it funds.</small></li>
-   <li><span class="ic">&#127912;</span><b>Your brand, your business</b><small>Your logo, your clients, your fees.</small></li>
+   <li><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span><b>High-value deals</b><small>Real estate offerings, ready to share.</small></li>
+   <li><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><b>Get paid fast</b><small>Your fee is paid as soon as it funds.</small></li>
+   <li><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><b>Your brand, your business</b><small>Your logo, your clients, your fees.</small></li>
   </ul>
  </div>
  <a class="cta" id="sg_go" href="/bedrock-partner-preview/join-sussex?go=1">Join the network, free <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>

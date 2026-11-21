@@ -60,12 +60,14 @@ function mount(p){drop('.cv-bar');drop('.cv-pcard');var tu=C.trackerUrl(p);
  bar.querySelector('#pb_share').onclick=function(){sharePage(p)};bar.querySelector('#pb_edit').onclick=function(){editMe(p)};bar.querySelector('#pb_fix').onclick=function(){openFix(p)}}
 /* last step of sign-up: the private link is the only way back in, so it is shown and saved here */
 function ready(p,m){mount(p);var base=p.base||6,link=C.privateUrl(p);
- m.set('<div class="cv-ready">&#10003;</div><h3>Your page is live</h3><p class="cv-sub">Share it with people you know. It is the real deal page, with your name on it.</p>'+
- '<p style="text-align:center;font-weight:700;margin:0">'+esc(feeLine(base))+'</p>'+
- (p.team?'<p class="cv-sub" style="text-align:center;margin:4px 0 0">'+esc(p.team.name||'The partner who invited you')+' brought you on, so they take '+p.team.cut+'% of your '+base+'% fee on each sale. Your Tracker shows it.</p>':'')+
- '<div class="cv-keybox"><b>Save your private link</b><span>It opens your Tracker and lets you edit your page. Keep it to yourself. Your share link is different and safe to send.</span>'+
+ m.set('<div class="cv-rdy"><div class="cv-ready">&#10003;</div><h3>Your page is live</h3><p class="cv-sub">The real deal page, with your name on top.</p></div>'+
+ '<div class="cv-lkc"><small>Your page</small><b>'+esc(C.prettyUrl(p).replace(/^https?:\/\//,''))+'</b></div>'+
+ '<button type="button" class="cv-btn cv-huge" id="sh3">'+ic('share',22)+'Share my page</button>'+
+ '<p class="cv-fee">'+esc(feeLine(base))+'</p>'+
+ (p.team?'<p class="cv-sub cv-feet">'+esc(p.team.name||'The partner who invited you')+' brought you on, so they take '+p.team.cut+'% of your '+base+'% fee on each sale. Your Tracker shows it.</p>':'')+
+ '<div class="cv-keybox"><b>&#128273; Save your private link</b><span>It opens your Tracker and lets you edit your page. Keep it to yourself.</span>'+
  '<button type="button" class="cv-btn cv-ghost" id="keycopy"><span class="lbl">Copy my private link</span></button></div>'+
- '<button type="button" class="cv-btn cv-huge" id="sh3">'+ic('share',26)+'Share my page</button>'+(p.logo?'':'<button type="button" class="cv-btn cv-ghost" id="cust">Add my logo and colors</button>')+'<button type="button" class="cv-btn cv-link" id="see">See my page</button>','#sh3');
+ (p.logo?'':'<button type="button" class="cv-btn cv-ghost" id="cust">Add my logo and colors</button>')+'<button type="button" class="cv-btn cv-link" id="see">See my page</button>','#sh3');
  var cb=m.pop.querySelector('#cust');if(cb)cb.onclick=function(){C.ph&&C.ph('partner_customize_open',{});C.openProfile({mode:'custom',p:p,m:m,onSave:function(p2){p2.team=p.team;C.render(p2);ready(p2,m)},onSkip:function(){ready(p,m)}})};
  m.pop.querySelector('#keycopy').onclick=function(){copyText(link,this)};
  m.pop.querySelector('#sh3').onclick=function(){sharePage(p)};m.pop.querySelector('#see').onclick=m.close}

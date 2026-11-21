@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/bedrock-partner-preview/p/cover.css?v=d4af081a"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"><title>Your tracker - Sussex</title><style>*{box-sizing:border-box}html,body{overflow-x:hidden}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/bedrock-partner-preview/p/cover.css?v=d647ab7c"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"><title>Your tracker - Sussex</title><style>*{box-sizing:border-box}html,body{overflow-x:hidden}
 body{margin:0;background:#FBF7F2;color:#1D1712;font:17px/1.5 -apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#C43B00}.d-top{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 16px;background:#fff;border-bottom:1px solid #ECE3D9}.d-top img{height:26px}.d-top span{margin-left:auto;font-size:14px;color:#6F6258}
 .d-wrap{max-width:720px;margin:0 auto;padding:16px 16px 40px}.d-card{background:#fff;border-radius:22px;padding:20px 18px;margin-top:14px;box-shadow:0 1px 2px rgba(80,40,10,.05);border:1px solid #ECE3D9}
@@ -73,6 +73,56 @@ body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Helvetica
 .d-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#FF4D00;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 
 .d-person{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #EFE6DC}.d-person:first-child{border-top:0}.d-person i{flex:none;width:36px;height:36px;border-radius:50%;background:#FFF0E6;color:#C43B00;font:700 13px/36px inherit;text-align:center;font-style:normal}.d-person span{flex:1;min-width:0;font-weight:600}.d-person small{display:block;font-weight:500;color:#8A7B6F;font-size:13px}.d-person b{font-variant-numeric:tabular-nums}
+
+/* design pass 2, 11-20 (operator: "the design is a fail"; rules: scratchpad design-rules.md — one primary per screen, fewer borders, 16px body, compact tiles) */
+body{font-size:16px;line-height:1.5;background:#F7F3EE}
+.d-wrap{padding:12px 16px 48px}
+.d-card{border:0;border-radius:20px;padding:20px;box-shadow:0 1px 2px rgba(40,25,10,.05),0 6px 20px -8px rgba(40,25,10,.10);margin-top:12px}
+.d-card h2{font-size:19px;letter-spacing:-.015em;line-height:1.25}
+.d-sub{font-size:14px;line-height:1.45;color:#7A6D62}
+.d-note{font-size:14px;line-height:1.45;color:#5E534A}
+#mecard{position:relative;overflow:hidden;padding-top:22px}
+#mecard:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#FF5A10,#FF9A4D)}
+.d-me{gap:12px}.d-me h1{font-size:24px;line-height:1.15}.d-me p{font-size:14px}
+.d-av{width:52px;height:52px;border-radius:14px;font-size:18px}
+.d-badge{margin-top:12px;padding:5px 11px 5px 8px;font-size:13px;gap:6px}.d-badge svg{width:16px;height:16px}
+.d-rate{margin-top:16px;font-size:18px}
+#feenote{font-size:14px;color:#7A6D62;margin-top:4px}
+#ylk{font-size:13px;color:#9A8D82}
+.d-btn{min-height:54px;border-radius:14px;font-size:16px}
+.d-btn.huge{min-height:56px;font-size:17px;border-radius:14px;background:linear-gradient(135deg,#FF5A10,#E84300);box-shadow:0 10px 22px -10px rgba(232,67,0,.7)}
+.d-btn.huge svg{width:20px;height:20px}
+.d-acts{gap:8px}.d-act{min-height:58px;border:0;background:#F6F0E9;font-size:13px;border-radius:12px}.d-act svg{width:18px;height:18px}
+.d-keylink{font-size:13px;color:#7A6D62;font-weight:600}
+/* stats: one card, 2x2, hairline dividers */
+.d-nums{gap:0;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 1px 2px rgba(40,25,10,.05),0 6px 20px -8px rgba(40,25,10,.10);margin-top:12px}
+.d-num{border:0;border-radius:0;padding:16px 18px;background:#fff;box-shadow:none}
+.d-num:nth-child(odd){border-right:1px solid #F0E8DF}.d-num:nth-child(-n+2){border-bottom:1px solid #F0E8DF}
+.d-num .ti{width:auto;height:auto;background:none;display:inline;color:#C2B5A8}.d-num .ti svg{width:16px;height:16px;vertical-align:-3px}
+.d-num b{font-size:28px;margin-top:6px;font-variant-numeric:tabular-nums}
+.d-num span.l{font-size:13px;color:#7A6D62;min-height:0}
+/* people + counts */
+.d-cnt{font-size:14px;padding:9px 0}.d-h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:#9A8D82;font-weight:700}
+/* unlock */
+.d-unl{border:0;background:linear-gradient(160deg,#FFF8F0 0%,#FFEBD6 100%)}
+.d-unl-h{flex-direction:row;align-items:center;gap:12px}.d-lock{font-size:26px}
+.d-prog{height:10px}
+/* fold rows */
+.d-fold{padding:0}
+.d-fold summary{list-style:none;display:flex;align-items:center;gap:12px;padding:16px 20px;min-height:64px;cursor:pointer}
+.d-fold summary::-webkit-details-marker{display:none}
+.d-ft{flex:1;min-width:0}.d-ft b{display:block;font-size:16px;letter-spacing:-.01em}.d-ft small{display:block;font-size:13px;color:#7A6D62;margin-top:1px}
+.d-fold summary i{flex:none;width:9px;height:9px;border-right:2px solid #B3A595;border-bottom:2px solid #B3A595;transform:rotate(45deg);margin:-4px 4px 0 0;transition:transform .2s ease-out}
+.d-fold[open] summary i{transform:rotate(-135deg);margin-top:4px}
+.d-fb{padding:0 20px 20px}
+.d-fb>.d-sub:first-child{margin-top:0}
+.d-l{font-size:13px}.d-l input{font-size:16px;min-height:52px;border:1.5px solid #E7DDD2;background:#FCFAF7}
+.d-l input:focus{outline:0;border-color:#FF6A1A;background:#fff;box-shadow:0 0 0 3px rgba(255,90,16,.15)}
+.d-split b{font-size:20px}
+.d-top{background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) blur(10px);position:sticky;top:0;z-index:4}
+.d-top span{font-size:13px}
+.d-sample{font-size:13px;padding:6px 12px}
+@media(prefers-reduced-motion:reduce){.d-fold summary i{transition:none}}
 </style><script>(function(){!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister identify alias set_config reset opt_out_capturing opt_in_capturing get_distinct_id get_property startSessionRecording stopSessionRecording".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 const P=window.__P||{},code=new URLSearchParams(location.search).get('i')||'',src=/\/go\/?$/.test(location.pathname)?'open-link':(code?'personal-link':'preview');
 posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https://us.i.posthog.com',person_profiles:'identified_only',capture_pageview:true,capture_pageleave:true,autocapture:false,disable_session_recording:true,persistence:'localStorage'});posthog.register({deal:'sussex',flow:'partner',page:'tracker',is_test:true});})();</script></head><body>
@@ -91,11 +141,11 @@ posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https
 <div class="d-num"><span class="ti"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><b id="n_res"></b><span class="l">Reservations</span></div>
 <div class="d-num"><span class="ti"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span><b id="n_sh"></b><span class="l">Shares sold</span></div>
 <div class="d-num"><span class="ti"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><b id="n_fee"></b><span class="l">Fee earned</span></div></section>
-<section class="d-card"><h2>Your people</h2><p class="d-sub">People who tapped &ldquo;Hold my spot&rdquo; on your page. Only you see this list. A hold is not money in yet; our team confirms each one.</p><div id="ppl"></div><h3 class="d-h3" style="margin-top:18px">What people did</h3><div id="cnts"></div></section>
+<section class="d-card"><h2>Your people</h2><p class="d-sub">Who held a spot on your page. Only you see this.</p><div id="ppl"></div><h3 class="d-h3" style="margin-top:18px">What people did</h3><div id="cnts"></div></section>
 <section class="d-card d-unl" id="unl"><div class="d-unl-h"><span class="d-lock" id="ulock" aria-hidden="true">&#128274;</span><div><h2 id="ult"></h2><p class="d-sub" id="uls"></p></div></div>
 <div class="d-prog" role="progressbar" aria-label="Progress to #1" id="ulpb"><i id="ulbar"></i></div><div class="d-prog-l"><span id="ulme"></span><span id="ultop"></span></div>
 <p class="d-note">&#129309; Sales by pros you bring on count toward your rank too.</p><p class="d-note">&#9889; Your fee is paid after each person&rsquo;s money is in (signed and funded).</p></section>
-<section class="d-card" id="splitc"><h2>Give part of your fee</h2><p class="d-sub">Helping make a deal happen? Give part of your fee to someone. We track every share and pay it to them.</p>
+<details class="d-card d-fold" id="splitc"><summary><span class="d-ft"><b>Give part of your fee</b><small>Share your fee with someone who helped</small></span><i aria-hidden="true"></i></summary><div class="d-fb"><p class="d-sub">Helping make a deal happen? Give part of your fee to someone. We track every share and pay it to them.</p>
 <label class="d-l">Their name<input id="sp_name" type="text" placeholder="For example, Alex Kim" autocomplete="off" maxlength="120"></label>
 <label class="d-l">Their phone or email<input id="sp_ct" type="text" placeholder="So we can pay them" autocomplete="off" maxlength="200"></label>
 <input type="range" class="d-range" id="sp_r" min="0" max="6" step="0.5" value="0" aria-label="How much of your fee to share">
@@ -104,17 +154,17 @@ posthog.init('phc_CTcVwJS4da3rCu2sK2Nje3E3UYgrKdysjrzSUt8bkynX',{api_host:'https
 <p class="cv-err" id="sp_err" role="alert"></p>
 <button class="d-btn" id="sp_save" type="button" disabled>Save this split</button>
 <p class="d-ok" id="sp_ok" hidden>Saved. Our team confirms each split before payouts.</p>
-<div id="sp_list"></div></section>
-<section class="d-card" id="teamc"><h2>&#129309; Bring on other pros</h2><p class="d-sub" id="tm_sub"></p>
+<div id="sp_list"></div></div></details>
+<details class="d-card d-fold" id="teamc"><summary><span class="d-ft"><b>Bring on other pros</b><small>Your invite link and your cut</small></span><i aria-hidden="true"></i></summary><div class="d-fb"><p class="d-sub" id="tm_sub"></p>
 <label class="d-l" for="tm_r">Your cut of their fee: <b id="tm_cut"></b></label><input type="range" class="d-range" id="tm_r" min="0" max="6" step="0.5" aria-label="Your cut of their fee">
 <div class="d-split"><div><small>You get</small><b id="tm_me"></b></div><div class="them"><small>They keep</small><b id="tm_them"></b></div></div><p class="d-note" id="tm_ex"></p><p class="d-ok" id="tm_ok" hidden>Saved.</p>
 <div class="d-inv"><span id="tm_link"></span><button class="d-btn" id="tm_copy" type="button">Copy invite link</button></div>
-<div id="tm_list"></div></section>
-<section class="d-card" id="flow"><h2>Where your fee goes</h2><p class="d-sub">Every part of your fee and who gets it. Our team checks each one before paying.</p><div id="fl_list"></div><p class="d-grey" id="fl_basis"></p></section>
+<div id="tm_list"></div></div></details>
+<details class="d-card d-fold" id="flow"><summary><span class="d-ft"><b>Where your fee goes</b><small>Every part of your fee and who gets it</small></span><i aria-hidden="true"></i></summary><div class="d-fb"><p class="d-sub">Every part of your fee and who gets it. Our team checks each one before paying.</p><div id="fl_list"></div><p class="d-grey" id="fl_basis"></p></div></details>
 <section class="d-card"><h2><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg> Top performers in your industry</h2><p class="d-sub" id="bsub"></p><div class="d-nine" id="nine"></div><div id="race"></div></section>
 </main>
 
-<script>window.BP_LIB=1;window.__BP={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "deal": "sussex"};</script><script src="/bedrock-partner-preview/p/cover.js?v=d4af081a"></script><script src="/bedrock-partner-preview/p/partner.js?v=d4af081a"></script><script>(function(){var C=window.BPC,P=window.BPP,$=function(i){return document.getElementById(i)},esc=C.esc;
+<script>window.BP_LIB=1;window.__BP={"ROOT": "/bedrock-partner-preview/", "FN": "https://dtybhuhcuqybjipnfgcg.supabase.co/functions/v1/", "PREVIEW": true, "deal": "sussex"};</script><script src="/bedrock-partner-preview/p/cover.js?v=d647ab7c"></script><script src="/bedrock-partner-preview/p/partner.js?v=d647ab7c"></script><script>(function(){var C=window.BPC,P=window.BPP,$=function(i){return document.getElementById(i)},esc=C.esc;
 /* Real tracker (2026-11-20): every number comes from partner-me "stats". Money numbers come only from rows our team
    enters from real papers (partner_money_in). Until then they are 0. No sample data, no investor names. */
 var slug=(C.qs('p')||C.lsGet('bp_me','')).toLowerCase(),S=null,me=null,cutTimer=0;

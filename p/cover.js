@@ -99,7 +99,7 @@ function render(p){CUR=p;applySkin(p);banner(p);welcome(p)}
 function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0=o.p||{},m=o.m||modal('',{label:cust?'Customize your page':edit?'Edit my page':'Sign up'});
  var st={anon:!!p0.anon,logo:p0.logo||'',photo:p0.photo||'',a:p0.brand||SCHEMES[0].a,b:p0.brand2||SCHEMES[0].b,scheme:p0.scheme||'',touched:!!p0.brand,lock:!!p0.logo,newLogo:false,newPhoto:false};
  if(!st.scheme){st.scheme='custom';SCHEMES.forEach(function(s){if(s.a.toLowerCase()===String(st.a).toLowerCase()&&s.b.toLowerCase()===String(st.b).toLowerCase())st.scheme=s.id});if(!edit&&!p0.brand)st.scheme=SCHEMES[0].id}
- var h=(cust?'<h3>Add your logo and colors</h3><p class="cv-sub">Add your logo, photo and colors. You can skip this and do it any time.</p>':edit?'<h3>Edit my page</h3><p class="cv-sub">Change anything you like, then save.</p>':'<p class="cv-inv" id="invl" hidden></p><h3>Sign up</h3>')+
+ var h=(cust?'<h3>Add your logo and colors</h3><p class="cv-sub">Add your logo, photo and colors. You can skip this and do it any time.</p>':edit?'<h3>Edit my page</h3><p class="cv-sub">Change anything you like, then save.</p>':'<p class="cv-inv" id="invl" hidden></p><h3>Make your partner page</h3><p class="cv-sub cv-s1">Free. Takes about a minute.</p>')+
   '<div id="basic"'+(cust?' hidden':'')+'>'+
   (edit?'':'<div class="cv-lbl">I work in</div><div class="cv-schg" role="group" aria-label="I work in" style="margin-bottom:14px"><button type="button" class="cv-lbb" data-role="re" aria-pressed="'+(o.role==='re')+'">Real estate</button><button type="button" class="cv-lbb" data-role="fin" aria-pressed="'+(o.role==='fin')+'">Finance</button></div>')+
   '<label class="cv-lbl">Your name<input type="text" id="f_name" autocomplete="name" maxlength="120"></label>'+
@@ -121,10 +121,9 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
   '<label class="cv-lbl">Email<input type="email" id="f_em" autocomplete="email" maxlength="200"></label>'+
   '<label class="cv-lbl">Website<input type="url" id="f_web" placeholder="yourcompany.com" autocomplete="url" maxlength="200"></label>'+
   '</div>'+
-  (edit?'':'<ul class="cv-tbul">'+TB.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'+
-  '<a class="cv-tl" href="'+ROOT+'p/terms.html" target="_blank" rel="noopener">Read all terms</a>'+
-  '<label class="cv-chk"><input type="checkbox" id="accept"><span>I agree to the Partner Terms</span></label>')+
-  '<p class="cv-err" id="f_err" role="alert"></p><button type="button" class="cv-btn" id="make" disabled>'+(edit?'Save my page':'Sign up and make my page')+'</button>'+(cust?'<button type="button" class="cv-btn cv-link" id="skip">Skip for now</button>':'');
+  (edit?'':'<div class="cv-tbox"><ul class="cv-tbul">'+TB.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'+
+  '<label class="cv-chk"><input type="checkbox" id="accept"><span>I agree to the <a class="cv-tl" href="'+ROOT+'p/terms.html" target="_blank" rel="noopener">Partner Terms</a></span></label></div>')+
+  '<div class="cv-foot"><p class="cv-err" id="f_err" role="alert"></p><button type="button" class="cv-btn" id="make" disabled>'+(edit?'Save my page':'Make my page')+'</button></div>'+(cust?'<button type="button" class="cv-btn cv-link" id="skip">Skip for now</button>':'');
  m.set(h,cust?'#b_logo':'#f_name');var pop=m.pop,q=function(s){return pop.querySelector(s)};
  var ref=!edit?qs('ref').toLowerCase():'';
  if(ref)api('partner-signup',{op:'invite',deal:DEAL_TAG,ref:ref}).then(function(r){var t=q('#invl');if(!r.ok||!t||m.closed)return;t.innerHTML='&#129309;&nbsp; Invited by <b>'+esc(r.name||'a partner')+'</b>'+(r.company?' from '+esc(r.company):'');t.hidden=false;
@@ -172,7 +171,7 @@ function openProfile(o){var cust=o.mode==='custom',edit=o.mode==='edit'||cust,p0
  /* website typed: try the site's icon as a starting logo (only if the browser may turn it into a picture we can save) */
  var tm=0;q('#f_web').oninput=function(){clearTimeout(tm);tm=setTimeout(function(){if(st.lock||m.closed)return;var w=q('#f_web').value.trim(),d='';try{d=new URL(/^https?:/.test(w)?w:'https://'+w).hostname}catch(e){}
   if(!d||d.indexOf('.')<0)return;fitImage('https://www.google.com/s2/favicons?domain='+encodeURIComponent(d)+'&sz=128',{kind:'logo',max:128,limit:200000},function(u,im){if(!u||st.lock||m.closed)return;st.logo=u;st.newLogo=true;paint();if(im)colorsFrom(im)})},500)};
- function setBusy(b,t){busy=b;q('#make').textContent=b?t:(edit?'Save my page':'Sign up and make my page');ok()}
+ function setBusy(b,t){busy=b;q('#make').textContent=b?t:(edit?'Save my page':'Make my page');ok()}
  function saveEdit(){var slug=p0.slug,steps=[];
   if(st.newLogo&&st.logo)steps.push(['logo',st.logo]);if(st.newPhoto&&st.photo)steps.push(['photo',st.photo]);
   setBusy(true,'Saving…');
@@ -199,7 +198,7 @@ window.BPC={ph:ph,esc:esc,ic:ic,initials:initials,lsGet:lsGet,lsSet:lsSet,qs:qs,
  api:api,me:me,keyFor:keyFor,track:track,whyText:whyText,WHY:WHY,SITE_URL:SITE_URL,ROOT:ROOT,DEAL_TAG:DEAL_TAG,TERMS_VERSION:TERMS_VERSION,PRICE:null};
 if(window.BP_LIB)return; /* tracker.html wants only the helpers */
 /* ---------- partner-only tools: partner.js is fetched only in a browser that holds this link's private key ---------- */
-function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=d4af081a';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
+function loadPartner(cb){if(window.BPP){cb(window.BPP);return}var s=doc.createElement('script');s.src=ROOT+'p/partner.js?v=d647ab7c';s.setAttribute('data-cv','1');s.onload=function(){cb(window.BPP)};s.onerror=function(){cb(null)};doc.body.appendChild(s)}
 /* ---------- reserve: partner credit + the "before you continue" step, then the page's own "Hold my spot" box ---------- */
 var MAILSEL='a[href^="mailto:ashley"],a[href^="mailto:shravaan"]',PASS=false,REF='';
 function mailParts(h){var q=h.split('?')[1]||'',o={};q.split('&').forEach(function(kv){var i=kv.indexOf('=');if(i>0){try{o[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1))}catch(e){o[kv.slice(0,i)]=kv.slice(i+1)}}});return {to:h.split('?')[0].replace(/^mailto:/,''),subject:o.subject||'',body:o.body||''}}
